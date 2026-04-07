@@ -1232,7 +1232,7 @@ const Footer = ({ darkMode }) => (
           </a>
         ))}
       </div>
-      <p className={`text-xs ${darkMode ? "text-slate-600" : "text-stone-400"}`}>© 2025 Aditya Kumar. All rights reserved.</p>
+      <p className={`text-xs ${darkMode ? "text-slate-600" : "text-stone-400"}`}>© 2026 Aditya Kumar. All rights reserved.</p>
     </div>
   </footer>
 );
