@@ -32,7 +32,7 @@ const stats = [
 const projects = [
   {
     id: 1,
-    title: "LLC Resonant Converter for EV Charging",
+    title: "Design of LLC Resonant Converter for EV Charging",
     subtitle: "M.Tech Thesis Project",
     category: "Power Electronics",
     period: "May 2025 – Present",
@@ -47,7 +47,7 @@ const projects = [
   },
   {
     id: 2,
-    title: "PFC Converter for EV Charger",
+    title: "Design and Development of PFC Converter for EV Charger",
     subtitle: "Hardware Development",
     category: "Power Electronics",
     period: "Aug 2024 – Present",
@@ -62,7 +62,7 @@ const projects = [
   },
   {
     id: 3,
-    title: "Flyback DC-DC Converter",
+    title: "Design, Simulation and Hardware Development of Flyback Converter",
     subtitle: "Design & Hardware Implementation",
     category: "Power Electronics",
     period: "Aug – Nov 2024",
@@ -77,7 +77,7 @@ const projects = [
   },
   {
     id: 4,
-    title: "Back-to-Back 2-Level VSC",
+    title: "Performance Evaluation of Back-to-Back 2-Level VSC",
     subtitle: "Performance Evaluation",
     category: "Power Quality",
     period: "Jan – Apr 2025",
@@ -92,7 +92,7 @@ const projects = [
   },
   {
     id: 5,
-    title: "Loss Minimization – Induction Motor Drive",
+    title: "Loss Minimization Control of an Induction Motor Drive",
     subtitle: "DSP Control Implementation",
     category: "Motor Drives",
     period: "Jan – Apr 2025",
@@ -107,7 +107,7 @@ const projects = [
   },
   {
     id: 6,
-    title: "Single Phase Active Filter",
+    title: "Single Phase Active Filter for Harmonic Compensation",
     subtitle: "Harmonic Compensation",
     category: "Power Quality",
     period: "Jan – Apr 2025",
@@ -122,7 +122,7 @@ const projects = [
   },
   {
     id: 7,
-    title: "EV Charging Infrastructure – Heavy Duty",
+    title: "EV Charging Infrastructure for Heavy Duty Vehicles",
     subtitle: "Technical Seminar Report",
     category: "EV Systems",
     period: "Aug – Nov 2024",
@@ -238,14 +238,22 @@ const education = [
     note: "AA Grade in Energy Efficient Industrial Drives | Final Project: Omni-directional Robot",
     logo: "/RECB_logo.jpg",
   },
+  {
+    degree: "Intermediate (Class XII) — PCM",
+    institution: "UP Board",
+    period: "2016 – 2018",
+    gpa: "District 4th Rank",
+    note: "Awarded U.P. Chief Minister Award for securing 4th rank in district intermediate examination",
+    logo: null,
+  },
 ];
 
 const achievements = [
-  { title: "GATE Top 2.55 Percentile", description: "EE 2024 — top 2.55% of 59,000+ candidates nationwide", year: "2024", gold: true },
-  { title: "IIT Bombay M.Tech", description: "Admitted to Energy Science & Engineering specialization", year: "2024", gold: true },
-  { title: "AA Grade — Industrial Drives", description: "Highest grade in Energy Efficient Industrial Drives at AKTU", year: "2023", gold: false },
-  { title: "U.P. Chief Minister Award", description: "Awarded by Hon. Yogi Adityanath for 4th rank in district intermediate exams", year: "2018", gold: true },
-  { title: "Vivek Shukla Memorial Award", description: "7th rank in district SSC examination", year: "2016", gold: false },
+  { title: "GATE Top 2.55 Percentile", emoji: "🏆", description: "EE 2024 — top 2.55% of 59,000+ candidates nationwide. One of the highest scorers among electrical engineering aspirants.", year: "2024", gold: true },
+  { title: "IIT Bombay M.Tech Admission", emoji: "🎓", description: "Admitted to prestigious IIT Bombay in Energy Science & Engineering specialization with a current CPI of 9.19 / 10.", year: "2024", gold: true },
+  { title: "AA Grade — Industrial Drives", emoji: "⭐", description: "Awarded the highest possible grade (AA) in Energy Efficient Industrial Drives at AKTU — recognizing exceptional academic performance.", year: "2023", gold: false },
+  { title: "U.P. Chief Minister Award", emoji: "🏅", description: "Personally awarded by Hon. Chief Minister Yogi Adityanath for securing 4th rank in the entire district in the Class XII board examination.", year: "2018", gold: true },
+  { title: "Vivek Shukla Memorial Award", emoji: "🥇", description: "Recognised with the Vivek Shukla Memorial Award for achieving 7th rank in the district SSC (Class X) examination.", year: "2016", gold: false },
 ];
 
 const leadership = [
@@ -364,6 +372,10 @@ const TypeWriter = ({ words }) => {
   );
 };
 
+const SectionDivider = ({ darkMode }) => (
+  <div className={`w-full h-px ${darkMode ? "bg-gradient-to-r from-transparent via-slate-700 to-transparent" : "bg-gradient-to-r from-transparent via-stone-300 to-transparent"}`} />
+);
+
 const SectionHeader = ({ eyebrow, title, subtitle, center = false, darkMode }) => (
   <div className={`mb-12 ${center ? "text-center" : ""}`}>
     {eyebrow && (
@@ -399,6 +411,7 @@ const Navbar = ({ darkMode, toggleDark }) => {
     { label: "Projects", href: "#projects" },
     { label: "Skills", href: "#skills" },
     { label: "Education", href: "#education" },
+    { label: "Achievements", href: "#achievements" },
     { label: "Contact", href: "#contact" },
   ];
   return (
@@ -734,9 +747,13 @@ const ProjectsSection = ({ darkMode }) => {
                     <img src={project.image} alt={project.title}
                       className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center"
-                      style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)", backgroundSize: "18px 18px" }}>
-                      <div className="text-white opacity-40">{categoryIcon[project.category]}</div>
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-3"
+                      style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)", backgroundSize: "18px 18px" }}>
+                      <div className="text-white opacity-50">{categoryIcon[project.category]}</div>
+                      <div className="text-center px-4">
+                        <p className="text-white/60 text-xs font-bold uppercase tracking-widest">{project.category}</p>
+                        <p className="text-white font-semibold text-sm mt-1 drop-shadow">{project.highlight}</p>
+                      </div>
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
@@ -925,26 +942,37 @@ const CourseworkSection = ({ darkMode }) => (
 );
 
 // ═══════════════════════════════════════════════════════════════
-// EDUCATION & ACHIEVEMENTS & LEADERSHIP
+// EDUCATION
 // ═══════════════════════════════════════════════════════════════
 
 const EducationSection = ({ darkMode }) => (
   <section id="education" className={`py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
     <div className="max-w-6xl mx-auto px-6">
-
       <Reveal>
-        <SectionHeader eyebrow="Education & Milestones" title="Academic Journey" darkMode={darkMode} />
+        <SectionHeader
+          eyebrow="Education"
+          title="Academic Journey"
+          subtitle="Built on rigorous engineering fundamentals — from a top GATE rank to an IIT Bombay M.Tech."
+          darkMode={darkMode}
+        />
       </Reveal>
-
-      <div className="space-y-5 mb-16">
+      <div className="space-y-5">
         {education.map((edu, i) => (
-          <Reveal key={edu.institution} delay={i * 100}>
-            <div className={`flex gap-5 p-6 rounded-2xl border ${darkMode ? "bg-slate-800 border-slate-700" : "bg-stone-50 border-stone-200"}`}>
+          <Reveal key={edu.institution + edu.period} delay={i * 100}>
+            <div className={`flex gap-5 p-6 rounded-2xl border transition-all hover:shadow-md ${
+              darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/20" : "bg-stone-50 border-stone-200 hover:border-amber-200"
+            }`}>
               <div className={`w-14 h-14 rounded-xl border flex-shrink-0 flex items-center justify-center overflow-hidden ${
                 darkMode ? "bg-slate-700 border-slate-600" : "bg-white border-stone-200 shadow-sm"
               }`}>
-                <img src={edu.logo} alt={edu.institution} className="w-10 h-10 object-contain"
-                  onError={e => { e.target.style.display = "none"; }} />
+                {edu.logo ? (
+                  <img src={edu.logo} alt={edu.institution} className="w-10 h-10 object-contain"
+                    onError={e => { e.target.style.display = "none"; }} />
+                ) : (
+                  <span className={`text-sm font-bold ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
+                    {edu.institution.substring(0, 2).toUpperCase()}
+                  </span>
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-start justify-between gap-2">
@@ -963,48 +991,90 @@ const EducationSection = ({ darkMode }) => (
           </Reveal>
         ))}
       </div>
+    </div>
+  </section>
+);
 
+// ═══════════════════════════════════════════════════════════════
+// ACHIEVEMENTS
+// ═══════════════════════════════════════════════════════════════
+
+const AchievementsSection = ({ darkMode }) => (
+  <section id="achievements" className={`py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+    <div className="max-w-6xl mx-auto px-6">
       <Reveal>
-        <h3 className={`text-2xl font-serif font-bold mb-8 ${darkMode ? "text-white" : "text-stone-900"}`}>Scholastic Achievements</h3>
+        <SectionHeader
+          eyebrow="Scholastic Achievements"
+          title="Recognition & Awards"
+          subtitle="A track record of excellence — from district board ranks to India's most competitive engineering entrance exam."
+          darkMode={darkMode}
+        />
       </Reveal>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {achievements.map((ach, i) => (
-          <Reveal key={ach.title} delay={i * 70}>
-            <div className={`p-5 rounded-2xl border ${darkMode ? "bg-slate-800 border-slate-700" : "bg-stone-50 border-stone-200"}`}>
-              <div className="flex items-start gap-3">
-                <Award size={20} className={`flex-shrink-0 mt-0.5 ${ach.gold ? "text-amber-500" : "text-slate-400"}`} />
-                <div>
-                  <p className={`text-xs font-bold mb-1 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{ach.year}</p>
-                  <h4 className={`font-semibold text-sm leading-snug mb-1 ${darkMode ? "text-white" : "text-stone-900"}`}>{ach.title}</h4>
-                  <p className={`text-xs leading-relaxed ${darkMode ? "text-slate-400" : "text-stone-500"}`}>{ach.description}</p>
-                </div>
-              </div>
+          <Reveal key={ach.title} delay={i * 80}>
+            <div className={`h-full p-7 rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-lg ${
+              darkMode
+                ? "bg-slate-900 border-slate-800 hover:border-amber-400/30 hover:shadow-amber-500/5"
+                : "bg-white border-stone-200 hover:border-amber-200 hover:shadow-stone-200"
+            }`}>
+              <div className="text-5xl mb-5">{ach.emoji}</div>
+              <div className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold mb-3 ${
+                ach.gold
+                  ? darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-700"
+                  : darkMode ? "bg-slate-700 text-slate-400" : "bg-stone-100 text-stone-600"
+              }`}>{ach.year}</div>
+              <h3 className={`font-serif font-bold text-xl leading-snug mb-3 ${darkMode ? "text-white" : "text-stone-900"}`}>
+                {ach.title}
+              </h3>
+              <p className={`text-sm leading-relaxed ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
+                {ach.description}
+              </p>
             </div>
           </Reveal>
         ))}
       </div>
+    </div>
+  </section>
+);
 
+// ═══════════════════════════════════════════════════════════════
+// LEADERSHIP
+// ═══════════════════════════════════════════════════════════════
+
+const leadershipEmoji = ["🎯", "🔬", "⚡", "🤝"];
+
+const LeadershipSection = ({ darkMode }) => (
+  <section id="leadership" className={`py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
+    <div className="max-w-6xl mx-auto px-6">
       <Reveal>
-        <h3 className={`text-2xl font-serif font-bold mb-8 ${darkMode ? "text-white" : "text-stone-900"}`}>Leadership & Experience</h3>
+        <SectionHeader
+          eyebrow="Leadership & Experience"
+          title="Beyond the Lab"
+          subtitle="Driving impact through event management, teaching, and community outreach at IIT Bombay."
+          darkMode={darkMode}
+        />
       </Reveal>
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 gap-6">
         {leadership.map((role, i) => (
-          <Reveal key={role.role} delay={i * 70}>
-            <div className={`p-5 rounded-2xl border h-full ${darkMode ? "bg-slate-800 border-slate-700" : "bg-stone-50 border-stone-200"}`}>
-              <div className="flex items-start gap-3 mb-3">
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-amber-400/10" : "bg-amber-50"}`}>
-                  <Users size={17} className={darkMode ? "text-amber-400" : "text-amber-600"} />
-                </div>
-                <div>
-                  <h4 className={`font-semibold text-sm leading-snug ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h4>
-                  <p className={`text-xs mt-0.5 font-medium ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
-                  <p className={`text-xs ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{role.period}</p>
-                </div>
+          <Reveal key={role.role} delay={i * 80}>
+            <div className={`h-full p-7 rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-lg ${
+              darkMode
+                ? "bg-slate-800 border-slate-700 hover:border-amber-400/30 hover:shadow-amber-500/5"
+                : "bg-stone-50 border-stone-200 hover:border-amber-200 hover:shadow-stone-200"
+            }`}>
+              <div className="text-4xl mb-5">{leadershipEmoji[i] || "🌟"}</div>
+              <div className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold mb-3 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-700"}`}>
+                {role.period}
               </div>
-              <ul className="space-y-1.5">
+              <h3 className={`font-serif font-bold text-xl leading-snug mb-1 ${darkMode ? "text-white" : "text-stone-900"}`}>
+                {role.role}
+              </h3>
+              <p className={`text-sm font-semibold mb-4 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
+              <ul className="space-y-2.5">
                 {role.points.map(pt => (
-                  <li key={pt} className={`flex items-start gap-2 text-xs leading-relaxed ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
-                    <span className="mt-1.5 w-1 h-1 rounded-full bg-amber-500 flex-shrink-0" />
+                  <li key={pt} className={`flex items-start gap-3 text-sm leading-relaxed ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
+                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
                     {pt}
                   </li>
                 ))}
@@ -1013,7 +1083,6 @@ const EducationSection = ({ darkMode }) => (
           </Reveal>
         ))}
       </div>
-
     </div>
   </section>
 );
@@ -1201,12 +1270,23 @@ export default function App() {
       <Navbar darkMode={darkMode} toggleDark={() => setDarkMode(d => !d)} />
       <HeroSection darkMode={darkMode} />
       <StatsSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
       <AboutSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
       <ProjectsSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
       <SkillsSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
       <CertificationsSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
       <CourseworkSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
       <EducationSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
+      <AchievementsSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
+      <LeadershipSection darkMode={darkMode} />
+      <SectionDivider darkMode={darkMode} />
       <ContactSection darkMode={darkMode} />
       <Footer darkMode={darkMode} />
       <ScrollToTop darkMode={darkMode} />
