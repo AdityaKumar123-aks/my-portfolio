@@ -5,6 +5,7 @@ import {
   Zap, Cpu, Activity, Globe, Wrench, Users, Terminal,
   FileText, ArrowUp,
 } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA
@@ -1168,7 +1169,7 @@ const Footer = ({ darkMode }) => (
   </footer>
 );
 
-// ═══════════════════════════════════════════════════════════════
+// ═════════════════════════════════════════���═════════════════════
 // SCROLL TO TOP
 // ═══════════════════════════════════════════════════════════════
 
@@ -1210,6 +1211,7 @@ export default function App() {
       <ContactSection darkMode={darkMode} />
       <Footer darkMode={darkMode} />
       <ScrollToTop darkMode={darkMode} />
+      <Analytics />
     </div>
   );
 }
