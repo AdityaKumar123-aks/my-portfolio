@@ -26,7 +26,7 @@ const stats = [
   { value: 1,   suffix: " kW",  label: "LLC Converter",  sub: "EV Charging Thesis" },
   { value: 3.3, suffix: " kW",  label: "PFC Converter",  sub: "Hardware Built",     dec: 1 },
   { value: 28,  suffix: "%",    label: "Ripple Reduced", sub: "VSC Optimization" },
-  { value: 8,   suffix: "+",    label: "Real Projects",  sub: "Sim to Hardware" },
+  { value: 8,   suffix: "+",    label: "Real Projects",  sub: "Simulation to Hardware" },
 ];
 
 const projects = [
@@ -244,7 +244,7 @@ const education = [
     period: "2016 – 2018",
     gpa: "District 4th Rank",
     note: "Awarded U.P. Chief Minister Award for securing 4th rank in district intermediate examination",
-    logo: null,
+    logo: "/CSSIC_logo.jpg",
   },
 ];
 
@@ -614,7 +614,7 @@ const StatsSection = ({ darkMode }) => (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
         {stats.map((s, i) => (
           <Reveal key={s.label} delay={i * 80} className="text-center">
-            <div className={`text-3xl md:text-4xl font-serif font-bold ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
+            <div className={`text-3xl md:text-4xl font-bold tracking-tight ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
               <AnimatedCounter target={s.value} suffix={s.suffix} dec={s.dec || 0} />
             </div>
             <div className={`text-sm font-semibold mt-1 ${darkMode ? "text-white" : "text-stone-900"}`}>{s.label}</div>
@@ -667,7 +667,7 @@ const AboutSection = ({ darkMode }) => (
         <Reveal direction="right" delay={150}>
           <div className={`rounded-2xl border overflow-hidden ${darkMode ? "border-slate-800 bg-slate-900" : "border-stone-200 bg-white shadow-sm"}`}>
             <div className={`px-6 py-4 border-b ${darkMode ? "border-slate-800" : "border-stone-200"}`}>
-              <h3 className={`font-serif font-bold text-lg ${darkMode ? "text-white" : "text-stone-900"}`}>Why Hire Me?</h3>
+              <h3 className={`font-bold text-lg ${darkMode ? "text-white" : "text-stone-900"}`}>Why Hire Me?</h3>
             </div>
             <div className="px-6 py-5 space-y-5">
               {[
@@ -771,7 +771,7 @@ const ProjectsSection = ({ darkMode }) => {
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div>
                       <p className={`text-xs font-medium mb-1 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{project.period}</p>
-                      <h3 className={`font-serif font-bold text-lg leading-tight ${darkMode ? "text-white" : "text-stone-900"}`}>{project.title}</h3>
+                      <h3 className={`font-bold text-base leading-snug ${darkMode ? "text-white" : "text-stone-900"}`}>{project.title}</h3>
                     </div>
                     <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"
                       className={`flex-shrink-0 p-2 rounded-lg border transition-colors ${
@@ -830,7 +830,7 @@ const SkillsSection = ({ darkMode }) => (
               <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${darkMode ? "bg-amber-400/10 text-amber-400" : "bg-amber-100 text-amber-600"}`}>
                 {skillIconEl[group.icon]}
               </div>
-              <h3 className={`font-serif font-bold text-base mb-4 ${darkMode ? "text-white" : "text-stone-900"}`}>{group.title}</h3>
+              <h3 className={`font-bold text-base mb-4 ${darkMode ? "text-white" : "text-stone-900"}`}>{group.title}</h3>
               <div className="flex flex-wrap gap-1.5">
                 {group.items.map(item => (
                   <span key={item} className={`text-xs px-2.5 py-1 rounded-full font-medium border ${
@@ -877,7 +877,7 @@ const CertificationsSection = ({ darkMode }) => (
                   {cert.badge}
                 </div>
                 <div>
-                  <h3 className={`font-serif font-bold text-base leading-snug ${darkMode ? "text-white" : "text-stone-900"}`}>{cert.title}</h3>
+                  <h3 className={`font-semibold text-base leading-snug ${darkMode ? "text-white" : "text-stone-900"}`}>{cert.title}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <span className={`text-xs font-semibold ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{cert.issuer}</span>
                     <span className={`text-xs ${darkMode ? "text-slate-500" : "text-stone-400"}`}>· {cert.period}</span>
@@ -922,7 +922,7 @@ const CourseworkSection = ({ darkMode }) => (
               <div className="flex items-start gap-3">
                 <div className="mt-1.5 w-2 h-2 rounded-full bg-amber-500 flex-shrink-0" />
                 <div>
-                  <h3 className={`font-serif font-bold text-base leading-snug mb-2 ${darkMode ? "text-white" : "text-stone-900"}`}>{course.title}</h3>
+                  <h3 className={`font-semibold text-base leading-snug mb-2 ${darkMode ? "text-white" : "text-stone-900"}`}>{course.title}</h3>
                   <p className={`text-sm leading-relaxed mb-3 ${darkMode ? "text-slate-400" : "text-stone-600"}`}>{course.topics}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {course.tags.map(tag => (
@@ -977,7 +977,7 @@ const EducationSection = ({ darkMode }) => (
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
-                    <h3 className={`font-serif font-bold text-lg ${darkMode ? "text-white" : "text-stone-900"}`}>{edu.degree}</h3>
+                    <h3 className={`font-bold text-base ${darkMode ? "text-white" : "text-stone-900"}`}>{edu.degree}</h3>
                     <p className={`font-semibold mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{edu.institution}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
@@ -1024,7 +1024,7 @@ const AchievementsSection = ({ darkMode }) => (
                   ? darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-700"
                   : darkMode ? "bg-slate-700 text-slate-400" : "bg-stone-100 text-stone-600"
               }`}>{ach.year}</div>
-              <h3 className={`font-serif font-bold text-xl leading-snug mb-3 ${darkMode ? "text-white" : "text-stone-900"}`}>
+              <h3 className={`font-bold text-lg leading-snug mb-3 ${darkMode ? "text-white" : "text-stone-900"}`}>
                 {ach.title}
               </h3>
               <p className={`text-sm leading-relaxed ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
@@ -1067,7 +1067,7 @@ const LeadershipSection = ({ darkMode }) => (
               <div className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold mb-3 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-700"}`}>
                 {role.period}
               </div>
-              <h3 className={`font-serif font-bold text-xl leading-snug mb-1 ${darkMode ? "text-white" : "text-stone-900"}`}>
+              <h3 className={`font-bold text-lg leading-snug mb-1 ${darkMode ? "text-white" : "text-stone-900"}`}>
                 {role.role}
               </h3>
               <p className={`text-sm font-semibold mb-4 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
@@ -1126,7 +1126,7 @@ const ContactSection = ({ darkMode }) => {
           <Reveal>
             <div className="space-y-5">
               <div>
-                <h3 className={`font-serif font-bold text-xl mb-2 ${darkMode ? "text-white" : "text-stone-900"}`}>Reach Out Directly</h3>
+                <h3 className={`font-bold text-xl mb-2 ${darkMode ? "text-white" : "text-stone-900"}`}>Reach Out Directly</h3>
                 <p className={`text-sm leading-relaxed ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
                   Whether you're a recruiter, researcher, or fellow engineer — I'm happy to discuss power electronics,
                   EV charging systems, or potential opportunities.
@@ -1159,13 +1159,13 @@ const ContactSection = ({ darkMode }) => {
               {status === "success" ? (
                 <div className="flex flex-col items-center justify-center h-64 text-center">
                   <CheckCircle size={48} className="text-emerald-500 mb-4" />
-                  <h3 className={`font-serif font-bold text-xl mb-2 ${darkMode ? "text-white" : "text-stone-900"}`}>Message Sent!</h3>
+                  <h3 className={`font-bold text-xl mb-2 ${darkMode ? "text-white" : "text-stone-900"}`}>Message Sent!</h3>
                   <p className={`text-sm ${darkMode ? "text-slate-400" : "text-stone-500"}`}>Thank you — I'll get back to you within 24 hours.</p>
                   <button onClick={() => setStatus("idle")} className="mt-5 text-sm text-amber-600 hover:underline">Send another message</button>
                 </div>
               ) : (
                 <>
-                  <h3 className={`font-serif font-bold text-lg mb-5 ${darkMode ? "text-white" : "text-stone-900"}`}>Send a Message</h3>
+                  <h3 className={`font-bold text-lg mb-5 ${darkMode ? "text-white" : "text-stone-900"}`}>Send a Message</h3>
                   <div className="space-y-4">
                     {[
                       { id: "name", label: "Your Name", type: "text", placeholder: "John Doe" },
