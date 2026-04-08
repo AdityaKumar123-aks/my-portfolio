@@ -319,13 +319,23 @@ const useOnScreen = (threshold = 0.1) => {
 };
 
 const Reveal = ({ children, delay = 0, direction = "up", className = "" }) => {
-  const [setRef, visible] = useOnScreen(0.1);
-  const hidden = direction === "left" ? "-translate-x-8" : direction === "right" ? "translate-x-8" : "translate-y-8";
+  const [setRef, visible] = useOnScreen(0.08);
+  const hiddenMap = {
+    up:    "opacity-0 translate-y-10",
+    down:  "opacity-0 -translate-y-8",
+    left:  "opacity-0 -translate-x-10",
+    right: "opacity-0 translate-x-10",
+    scale: "opacity-0 scale-90",
+    fade:  "opacity-0",
+  };
+  const hidden = hiddenMap[direction] || hiddenMap.up;
   return (
     <div
       ref={setRef}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out ${visible ? "opacity-100 translate-x-0 translate-y-0" : `opacity-0 ${hidden}`} ${className}`}
+      className={`transition-all duration-700 ease-out will-change-transform ${
+        visible ? "opacity-100 translate-x-0 translate-y-0 scale-100" : hidden
+      } ${className}`}
     >
       {children}
     </div>
@@ -386,35 +396,32 @@ const GlobalStyles = () => {
     el.id = "portfolio-keyframes";
     if (!document.getElementById("portfolio-keyframes")) {
       el.textContent = `
-        @keyframes floatSpark {
-          0%   { transform: translateY(0) scale(1); opacity: 0; }
-          10%  { opacity: 1; }
-          80%  { opacity: 0.6; }
-          100% { transform: translateY(-520px) scale(0.4); opacity: 0; }
-        }
-        @keyframes waveScroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes glowPulse {
-          0%, 100% { opacity: 0.35; }
-          50%       { opacity: 0.65; }
-        }
-        @keyframes slideInLeft {
-          from { opacity: 0; transform: translateX(-24px); }
-          to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(24px); }
-          to   { opacity: 1; transform: translateX(0); }
+        @keyframes loadBar {
+          0%   { width: 0%; }
+          40%  { width: 55%; }
+          70%  { width: 78%; }
+          100% { width: 100%; }
         }
         @keyframes slideInUp {
-          from { opacity: 0; transform: translateY(20px); }
+          from { opacity: 0; transform: translateY(18px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .animate-floatSpark   { animation: floatSpark linear infinite; }
-        .animate-waveScroll   { animation: waveScroll linear infinite; }
-        .animate-glowPulse    { animation: glowPulse ease-in-out infinite; }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes scaleIn {
+          from { opacity: 0; transform: scale(0.85); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes ping-slow {
+          0%   { transform: scale(1); opacity: 0.6; }
+          100% { transform: scale(1.8); opacity: 0; }
+        }
+        .animate-ping-slow { animation: ping-slow 1.6s ease-out infinite; }
+        .animate-slideInUp { animation: slideInUp 0.55s ease-out both; }
+        .animate-fadeIn    { animation: fadeIn 0.6s ease-out both; }
+        .animate-scaleIn   { animation: scaleIn 0.5s ease-out both; }
       `;
       document.head.appendChild(el);
     }
@@ -441,6 +448,57 @@ const ScrollProgressBar = () => {
     </div>
   );
 };
+
+// ── Page loading screen ─────────────────────────────────────────
+const LoadingScreen = ({ onDone }) => {
+  const [fading, setFading] = useState(false);
+  useEffect(() => {
+    const t1 = setTimeout(() => setFading(true), 1700);
+    const t2 = setTimeout(() => onDone(), 2250);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [onDone]);
+  return (
+    <div className={`fixed inset-0 z-[110] bg-slate-950 flex flex-col items-center justify-center transition-opacity duration-500 ${fading ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+      {/* Logo mark */}
+      <div className="relative mb-7 animate-scaleIn" style={{ animationDelay: "0s" }}>
+        <div className="w-20 h-20 rounded-2xl bg-amber-600 flex items-center justify-center shadow-2xl shadow-amber-600/50">
+          <span className="text-white font-serif font-bold text-3xl">AK</span>
+        </div>
+        <div className="absolute -inset-3 rounded-2xl border border-amber-400/30 animate-ping-slow" />
+      </div>
+      {/* Name */}
+      <h1 className="text-white font-serif font-bold text-3xl mb-1.5 animate-slideInUp" style={{ animationDelay: "0.25s" }}>
+        Aditya Kumar
+      </h1>
+      <p className="text-slate-500 text-sm mb-10 animate-slideInUp" style={{ animationDelay: "0.4s" }}>
+        Power Electronics &amp; EV Charging Engineer
+      </p>
+      {/* Progress bar */}
+      <div className="w-56 h-0.5 bg-slate-800 rounded-full overflow-hidden animate-fadeIn" style={{ animationDelay: "0.5s" }}>
+        <div className="h-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-400 rounded-full"
+          style={{ animation: "loadBar 1.65s cubic-bezier(0.4,0,0.2,1) 0.5s forwards", width: "0%" }} />
+      </div>
+      {/* Subtle tagline */}
+      <p className="text-slate-700 text-xs mt-5 tracking-widest uppercase animate-fadeIn" style={{ animationDelay: "0.7s" }}>
+        Loading portfolio…
+      </p>
+    </div>
+  );
+};
+
+// ── Large "ADITYA" watermark (footer area) ──────────────────────
+const BigNameWatermark = ({ darkMode }) => (
+  <div className="overflow-hidden py-4 pointer-events-none select-none" aria-hidden>
+    <p className="text-center font-serif font-black leading-none tracking-[0.12em] whitespace-nowrap"
+      style={{
+        fontSize: "clamp(64px, 18vw, 220px)",
+        WebkitTextStroke: darkMode ? "1.5px rgba(251,191,36,0.18)" : "1.5px rgba(120,70,0,0.14)",
+        color: "transparent",
+      }}>
+      ADITYA
+    </p>
+  </div>
+);
 
 // ── Hero background: animated oscilloscope waveform ─────────────
 const WaveformCanvas = ({ darkMode }) => {
@@ -485,32 +543,6 @@ const WaveformCanvas = ({ darkMode }) => {
   return <canvas ref={ref} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden />;
 };
 
-// ── Floating electrical sparks (hero only) ──────────────────────
-const sparks = Array.from({ length: 14 }, (_, i) => ({
-  id: i,
-  symbol: ["⚡","∿","φ","~","Ω","∫"][i % 6],
-  left: `${(i * 7.1 + 3) % 96}%`,
-  delay: `${(i * 1.1) % 9}s`,
-  duration: `${10 + (i % 5) * 2.5}s`,
-  size: i % 3 === 0 ? "16px" : "11px",
-}));
-
-const FloatingSparks = ({ darkMode }) => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-    {sparks.map(s => (
-      <span key={s.id} className="absolute bottom-0 animate-floatSpark select-none"
-        style={{
-          left: s.left,
-          fontSize: s.size,
-          animationDuration: s.duration,
-          animationDelay: s.delay,
-          color: darkMode ? "rgba(251,191,36,0.6)" : "rgba(180,83,9,0.45)",
-        }}>
-        {s.symbol}
-      </span>
-    ))}
-  </div>
-);
 
 const SectionHeader = ({ eyebrow, title, subtitle, center = false, darkMode }) => (
   <div className={`mb-12 ${center ? "text-center" : ""}`}>
@@ -623,7 +655,6 @@ const HeroSection = ({ darkMode }) => {
         backgroundSize: "28px 28px",
       }}>
       <WaveformCanvas darkMode={darkMode} />
-      <FloatingSparks darkMode={darkMode} />
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 w-full">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
 
@@ -876,7 +907,7 @@ const ProjectsSection = ({ darkMode }) => {
 
         <div className="grid md:grid-cols-2 gap-6">
           {filtered.map((project, i) => (
-            <Reveal key={project.id} delay={i * 60}>
+            <Reveal key={project.id} delay={i * 70} direction={i % 2 === 0 ? "left" : "right"}>
               <div className={`group rounded-2xl border overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
                 darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/30 hover:shadow-amber-500/5" : "bg-white border-stone-200 hover:border-amber-300 hover:shadow-stone-200/80"
               }`}>
@@ -1084,7 +1115,7 @@ const CertificationsSection = ({ darkMode }) => (
       </Reveal>
       <div className="grid md:grid-cols-2 gap-6">
         {certifications.map((cert, i) => (
-          <Reveal key={cert.title} delay={i * 80}>
+          <Reveal key={cert.title} delay={i * 90} direction={i % 2 === 0 ? "left" : "right"}>
             <div className={`p-6 rounded-2xl border h-full ${darkMode ? "bg-slate-800 border-slate-700" : "bg-stone-50 border-stone-200"}`}>
               <div className="flex items-start gap-4 mb-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-sm border flex-shrink-0 ${certBadgeStyle(cert.color, darkMode)}`}>
@@ -1129,7 +1160,7 @@ const CourseworkSection = ({ darkMode }) => (
       </Reveal>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {coursework.map((course, i) => (
-          <Reveal key={course.title} delay={i * 60}>
+          <Reveal key={course.title} delay={i * 80} direction="scale">
             <div className={`p-5 rounded-2xl border h-full transition-colors ${
               darkMode ? "bg-slate-900 border-slate-800 hover:border-amber-400/30" : "bg-white border-stone-200 hover:border-amber-200 shadow-sm"
             }`}>
@@ -1234,7 +1265,7 @@ const AchievementsSection = ({ darkMode }) => (
       </Reveal>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {achievements.map((ach, i) => (
-          <Reveal key={ach.title} delay={i * 80}>
+          <Reveal key={ach.title} delay={i * 90} direction="scale">
             <div className={`h-full p-7 rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-lg ${
               darkMode
                 ? "bg-slate-900 border-slate-800 hover:border-amber-400/30 hover:shadow-amber-500/5"
@@ -1489,33 +1520,38 @@ const ScrollToTop = ({ darkMode }) => {
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   return (
-    <div className={`font-sans ${darkMode ? "bg-slate-950 text-slate-100" : "bg-stone-50 text-stone-900"}`}>
+    <>
       <GlobalStyles />
-      <ScrollProgressBar />
-      <Navbar darkMode={darkMode} toggleDark={() => setDarkMode(d => !d)} />
-      <HeroSection darkMode={darkMode} />
-      <StatsSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <AboutSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <ProjectsSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <SkillsSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <CertificationsSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <CourseworkSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <EducationSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <AchievementsSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <LeadershipSection darkMode={darkMode} />
-      <SectionDivider darkMode={darkMode} />
-      <ContactSection darkMode={darkMode} />
-      <Footer darkMode={darkMode} />
-      <ScrollToTop darkMode={darkMode} />
-    </div>
+      <LoadingScreen onDone={() => setLoaded(true)} />
+      <div className={`font-sans transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"} ${darkMode ? "bg-slate-950 text-slate-100" : "bg-stone-50 text-stone-900"}`}>
+        <ScrollProgressBar />
+        <Navbar darkMode={darkMode} toggleDark={() => setDarkMode(d => !d)} />
+        <HeroSection darkMode={darkMode} />
+        <StatsSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <AboutSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <ProjectsSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <SkillsSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <CertificationsSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <CourseworkSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <EducationSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <AchievementsSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <LeadershipSection darkMode={darkMode} />
+        <SectionDivider darkMode={darkMode} />
+        <ContactSection darkMode={darkMode} />
+        <BigNameWatermark darkMode={darkMode} />
+        <Footer darkMode={darkMode} />
+        <ScrollToTop darkMode={darkMode} />
+      </div>
+    </>
   );
 }
