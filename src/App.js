@@ -545,13 +545,13 @@ const WaveformCanvas = ({ darkMode }) => {
 
 
 const SectionHeader = ({ eyebrow, title, subtitle, center = false, darkMode }) => (
-  <div className={`mb-12 ${center ? "text-center" : ""}`}>
+  <div className={`mb-8 md:mb-12 ${center ? "text-center" : ""}`}>
     {eyebrow && (
       <p className={`text-xs font-bold tracking-widest uppercase mb-3 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
         {eyebrow}
       </p>
     )}
-    <h2 className={`text-3xl md:text-4xl font-serif font-bold ${darkMode ? "text-white" : "text-stone-900"}`}>
+    <h2 className={`text-2xl sm:text-3xl md:text-4xl font-serif font-bold ${darkMode ? "text-white" : "text-stone-900"}`}>
       {title}
     </h2>
     {subtitle && (
@@ -590,7 +590,7 @@ const Navbar = ({ darkMode, toggleDark }) => {
           : "bg-white/95 backdrop-blur-sm border-b border-stone-200 shadow-md"
         : "bg-transparent"
     }`}>
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-lg bg-amber-600 flex items-center justify-center flex-shrink-0">
             <span className="text-white font-serif font-bold text-sm">AK</span>
@@ -623,7 +623,7 @@ const Navbar = ({ darkMode, toggleDark }) => {
         </div>
       </div>
       {open && (
-        <div className={`md:hidden px-6 pb-5 border-t ${darkMode ? "bg-slate-950 border-slate-800" : "bg-white border-stone-200"}`}>
+        <div className={`md:hidden px-4 pb-5 border-t ${darkMode ? "bg-slate-950 border-slate-800" : "bg-white border-stone-200"}`}>
           {links.map(l => (
             <a key={l.label} href={l.href} onClick={() => setOpen(false)}
               className={`flex py-3 text-sm font-medium border-b ${darkMode ? "text-slate-300 border-slate-800" : "text-stone-600 border-stone-100"}`}>
@@ -655,8 +655,8 @@ const HeroSection = ({ darkMode }) => {
         backgroundSize: "28px 28px",
       }}>
       <WaveformCanvas darkMode={darkMode} />
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 w-full">
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24 w-full">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
           {/* Left */}
           <div>
@@ -680,19 +680,19 @@ const HeroSection = ({ darkMode }) => {
             </Reveal>
 
             <Reveal delay={140}>
-              <h1 className={`text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight mb-5 ${darkMode ? "text-white" : "text-stone-900"}`}>
+              <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight mb-5 ${darkMode ? "text-white" : "text-stone-900"}`}>
                 Aditya Kumar
               </h1>
             </Reveal>
 
             <Reveal delay={200}>
-              <div className={`text-lg md:text-xl font-medium mb-6 ${darkMode ? "text-slate-300" : "text-stone-600"}`}>
+              <div className={`text-base sm:text-lg md:text-xl font-medium mb-6 ${darkMode ? "text-slate-300" : "text-stone-600"}`}>
                 <TypeWriter words={["Power Electronics Engineer", "EV Charging Specialist", "DSP Control Developer", "PCB Hardware Designer"]} />
               </div>
             </Reveal>
 
             <Reveal delay={250}>
-              <p className={`text-base leading-relaxed mb-8 max-w-lg ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
+              <p className={`text-sm sm:text-base leading-relaxed mb-6 sm:mb-8 max-w-lg ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
                 {profile.bio}
               </p>
             </Reveal>
@@ -728,7 +728,7 @@ const HeroSection = ({ darkMode }) => {
                   className={`p-2.5 rounded-xl border transition-all hover:-translate-y-0.5 ${darkMode ? "border-slate-700 text-slate-400 hover:border-amber-400 hover:text-amber-400" : "border-stone-200 text-stone-500 hover:border-amber-500 hover:text-amber-600"}`}>
                   <Mail size={19} />
                 </a>
-                <span className={`text-sm ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{profile.social.email}</span>
+                <span className={`text-sm hidden sm:inline truncate max-w-[200px] ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{profile.social.email}</span>
               </div>
             </Reveal>
           </div>
@@ -737,7 +737,7 @@ const HeroSection = ({ darkMode }) => {
           <Reveal direction="right" className="flex justify-center lg:justify-end">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 opacity-20 blur-2xl scale-110" />
-              <div className={`relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 shadow-2xl ${
+              <div className={`relative w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 shadow-2xl ${
                 darkMode ? "border-amber-400/50 shadow-amber-500/10" : "border-amber-500/60 shadow-amber-400/20"
               }`}>
                 {!imgErr ? (
@@ -750,11 +750,11 @@ const HeroSection = ({ darkMode }) => {
                   </div>
                 )}
               </div>
-              <div className={`absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 w-20 h-20 rounded-2xl border flex items-center justify-center shadow-xl ${
+              <div className={`absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border flex items-center justify-center shadow-xl ${
                 darkMode ? "bg-slate-900 border-slate-700" : "bg-white border-stone-200"
               }`}>
                 <div className="text-center">
-                  <div className="text-xl font-bold text-amber-600">9.19</div>
+                  <div className="text-base sm:text-xl font-bold text-amber-600">9.19</div>
                   <div className={`text-xs mt-0.5 ${darkMode ? "text-slate-400" : "text-stone-500"}`}>CPI</div>
                 </div>
               </div>
@@ -778,16 +778,16 @@ const HeroSection = ({ darkMode }) => {
 // ═══════════════════════════════════════════════════════════════
 
 const StatsSection = ({ darkMode }) => (
-  <section className={`py-12 border-y ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200"}`}>
-    <div className="max-w-6xl mx-auto px-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+  <section className={`py-10 border-y ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200"}`}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-7 sm:gap-8">
         {stats.map((s, i) => (
           <Reveal key={s.label} delay={i * 80} className="text-center">
-            <div className={`text-3xl md:text-4xl font-bold tracking-tight ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
+            <div className={`text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
               <AnimatedCounter target={s.value} suffix={s.suffix} dec={s.dec || 0} />
             </div>
-            <div className={`text-sm font-semibold mt-1 ${darkMode ? "text-white" : "text-stone-900"}`}>{s.label}</div>
-            <div className={`text-xs mt-0.5 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{s.sub}</div>
+            <div className={`text-xs sm:text-sm font-semibold mt-1 ${darkMode ? "text-white" : "text-stone-900"}`}>{s.label}</div>
+            <div className={`text-xs mt-0.5 leading-tight ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{s.sub}</div>
           </Reveal>
         ))}
       </div>
@@ -800,8 +800,8 @@ const StatsSection = ({ darkMode }) => (
 // ═══════════════════════════════════════════════════════════════
 
 const AboutSection = ({ darkMode }) => (
-  <section id="about" className={`py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
-    <div className="max-w-6xl mx-auto px-6">
+  <section id="about" className={`py-14 md:py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <div className="grid lg:grid-cols-2 gap-16 items-start">
         <Reveal>
           <SectionHeader eyebrow="About Me" title="From Equations to Hardware" darkMode={darkMode} center />
@@ -817,7 +817,7 @@ const AboutSection = ({ darkMode }) => (
             With 8+ hardware projects spanning EV charging, motor drives, and power quality, I bring both
             academic depth and industry-ready practical skills to every challenge.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
             {[
               { icon: <Cpu size={18} />, text: "Simulation → Hardware" },
               { icon: <Zap size={18} />, text: "Power Electronics Depth" },
@@ -835,10 +835,10 @@ const AboutSection = ({ darkMode }) => (
 
         <Reveal direction="right" delay={150}>
           <div className={`rounded-2xl border overflow-hidden ${darkMode ? "border-slate-800 bg-slate-900" : "border-stone-200 bg-white shadow-sm"}`}>
-            <div className={`px-6 py-4 border-b ${darkMode ? "border-slate-800" : "border-stone-200"}`}>
+            <div className={`px-4 sm:px-6 py-4 border-b ${darkMode ? "border-slate-800" : "border-stone-200"}`}>
               <h3 className={`font-bold text-lg ${darkMode ? "text-white" : "text-stone-900"}`}>Why Hire Me?</h3>
             </div>
-            <div className="px-6 py-5 space-y-5">
+            <div className="px-4 sm:px-6 py-5 space-y-5">
               {[
                 { title: "Simulation to Silicon", desc: "I design in PLECS/LTSpice, lay out PCBs in Altium, and test hardware on the bench — full-stack power engineer." },
                 { title: "DSP Firmware Skills", desc: "Hands-on TMS320F28379D coding — ePWM, ADC, PIE configuration for real closed-loop converter control." },
@@ -877,8 +877,8 @@ const ProjectsSection = ({ darkMode }) => {
   const [active, setActive] = useState("All");
   const filtered = active === "All" ? projects : projects.filter(p => p.category === active);
   return (
-    <section id="projects" className={`py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="projects" className={`py-14 md:py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <Reveal>
           <SectionHeader
             eyebrow="Featured Projects"
@@ -889,7 +889,7 @@ const ProjectsSection = ({ darkMode }) => {
         </Reveal>
 
         <Reveal delay={80}>
-          <div className="flex flex-wrap gap-2 mb-10">
+          <div className="flex flex-wrap gap-2 mb-8 md:mb-10">
             {projectCategories.map(cat => (
               <button key={cat} onClick={() => setActive(cat)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -936,7 +936,7 @@ const ProjectsSection = ({ darkMode }) => {
                   </div>
                 </div>
 
-                <div className="p-5">
+                <div className="p-4 sm:p-5">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div>
                       <p className={`text-xs font-medium mb-1 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{project.period}</p>
@@ -1004,8 +1004,8 @@ const SkillsSection = ({ darkMode }) => {
   const [activeIdx, setActiveIdx] = useState(0);
   const group = skillGroups[activeIdx];
   return (
-    <section id="skills" className={`py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="skills" className={`py-14 md:py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <Reveal>
           <SectionHeader eyebrow="Technical Skills" title="Tools of the Trade"
             subtitle="Comprehensive proficiency across simulation, hardware design, programming, and power electronics domains."
@@ -1017,7 +1017,7 @@ const SkillsSection = ({ darkMode }) => {
           <div className="flex flex-wrap justify-center gap-3 mb-10">
             {skillGroups.map((g, i) => (
               <button key={g.title} onClick={() => setActiveIdx(i)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
                   activeIdx === i
                     ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30 scale-105"
                     : darkMode
@@ -1039,7 +1039,7 @@ const SkillsSection = ({ darkMode }) => {
             darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200 shadow-md"
           }`}>
             {/* Panel header */}
-            <div className={`flex items-center gap-4 px-8 py-6 border-b ${
+            <div className={`flex items-center gap-4 px-4 sm:px-8 py-5 sm:py-6 border-b ${
               darkMode ? "border-slate-800 bg-slate-800/50" : "border-stone-100 bg-stone-50"
             }`}>
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 ${
@@ -1055,7 +1055,7 @@ const SkillsSection = ({ darkMode }) => {
               </div>
             </div>
             {/* Skills grid */}
-            <div className="px-8 py-7">
+            <div className="px-4 sm:px-8 py-5 sm:py-7">
               <div className="flex flex-wrap gap-3">
                 {group.items.map((item, i) => (
                   <span key={item}
@@ -1075,7 +1075,7 @@ const SkillsSection = ({ darkMode }) => {
 
         {/* All skills overview strip */}
         <Reveal delay={120}>
-          <div className={`mt-6 rounded-xl px-6 py-4 ${darkMode ? "bg-slate-900/60 border border-slate-800" : "bg-stone-100/80 border border-stone-200"}`}>
+          <div className={`mt-6 rounded-xl px-4 sm:px-6 py-4 ${darkMode ? "bg-slate-900/60 border border-slate-800" : "bg-stone-100/80 border border-stone-200"}`}>
             <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>All Skills at a Glance</p>
             <div className="flex flex-wrap gap-1.5">
               {skillGroups.flatMap(g => g.items).map(item => (
@@ -1106,8 +1106,8 @@ const certBadgeStyle = (color, darkMode) => {
 };
 
 const CertificationsSection = ({ darkMode }) => (
-  <section id="certifications" className={`py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
-    <div className="max-w-6xl mx-auto px-6">
+  <section id="certifications" className={`py-14 md:py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <Reveal>
         <SectionHeader eyebrow="Professional Certifications" title="Continuous Learning"
           subtitle="Industry-recognized certifications in DSP, EV technology, IoT, and professional development."
@@ -1116,7 +1116,7 @@ const CertificationsSection = ({ darkMode }) => (
       <div className="grid md:grid-cols-2 gap-6">
         {certifications.map((cert, i) => (
           <Reveal key={cert.title} delay={i * 90} direction={i % 2 === 0 ? "left" : "right"}>
-            <div className={`p-6 rounded-2xl border h-full ${darkMode ? "bg-slate-800 border-slate-700" : "bg-stone-50 border-stone-200"}`}>
+            <div className={`p-4 sm:p-6 rounded-2xl border h-full ${darkMode ? "bg-slate-800 border-slate-700" : "bg-stone-50 border-stone-200"}`}>
               <div className="flex items-start gap-4 mb-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-sm border flex-shrink-0 ${certBadgeStyle(cert.color, darkMode)}`}>
                   {cert.badge}
@@ -1151,8 +1151,8 @@ const CertificationsSection = ({ darkMode }) => (
 // ═══════════════════════════════════════════════════════════════
 
 const CourseworkSection = ({ darkMode }) => (
-  <section id="coursework" className={`py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
-    <div className="max-w-6xl mx-auto px-6">
+  <section id="coursework" className={`py-14 md:py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <Reveal>
         <SectionHeader eyebrow="Relevant Coursework" title="Specialized Curriculum"
           subtitle="Graduate-level courses at IIT Bombay focused on power electronics, EV systems, and motor drives."
@@ -1191,8 +1191,8 @@ const CourseworkSection = ({ darkMode }) => (
 // ═══════════════════════════════════════════════════════════════
 
 const EducationSection = ({ darkMode }) => (
-  <section id="education" className={`py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
-    <div className="max-w-6xl mx-auto px-6">
+  <section id="education" className={`py-14 md:py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <Reveal>
         <SectionHeader
           eyebrow="Education"
@@ -1204,15 +1204,15 @@ const EducationSection = ({ darkMode }) => (
       <div className="space-y-5">
         {education.map((edu, i) => (
           <Reveal key={edu.institution + edu.period} delay={i * 100}>
-            <div className={`flex gap-5 p-6 rounded-2xl border transition-all hover:shadow-md ${
+            <div className={`flex gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl border transition-all hover:shadow-md ${
               darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/20" : "bg-white border-stone-200 hover:border-amber-200"
             }`}>
               {/* Logo */}
-              <div className={`w-16 h-16 rounded-xl border flex-shrink-0 flex items-center justify-center overflow-hidden ${
+              <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl border flex-shrink-0 flex items-center justify-center overflow-hidden ${
                 darkMode ? "bg-slate-700 border-slate-600" : "bg-white border-stone-200 shadow-sm"
               }`}>
                 {edu.logo ? (
-                  <img src={edu.logo} alt={edu.institution} className="w-12 h-12 object-contain"
+                  <img src={edu.logo} alt={edu.institution} className="w-9 h-9 sm:w-12 sm:h-12 object-contain"
                     onError={e => { e.target.style.display = "none"; }} />
                 ) : (
                   <span className={`text-sm font-bold ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
@@ -1224,7 +1224,7 @@ const EducationSection = ({ darkMode }) => (
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                   <div>
-                    <h3 className={`font-bold text-lg leading-tight ${darkMode ? "text-white" : "text-stone-900"}`}>{edu.institution}</h3>
+                    <h3 className={`font-bold text-base sm:text-lg leading-tight ${darkMode ? "text-white" : "text-stone-900"}`}>{edu.institution}</h3>
                     <p className={`font-medium mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{edu.degree}</p>
                   </div>
                   <span className={`text-xs font-semibold px-2 py-1 rounded-md flex-shrink-0 ${
@@ -1253,8 +1253,8 @@ const EducationSection = ({ darkMode }) => (
 // ═══════════════════════════════════════════════════════════════
 
 const AchievementsSection = ({ darkMode }) => (
-  <section id="achievements" className={`py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
-    <div className="max-w-6xl mx-auto px-6">
+  <section id="achievements" className={`py-14 md:py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <Reveal>
         <SectionHeader
           eyebrow="Scholastic Achievements"
@@ -1266,7 +1266,7 @@ const AchievementsSection = ({ darkMode }) => (
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {achievements.map((ach, i) => (
           <Reveal key={ach.title} delay={i * 90} direction="scale">
-            <div className={`h-full p-7 rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-lg ${
+            <div className={`h-full p-5 sm:p-7 rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-lg ${
               darkMode
                 ? "bg-slate-900 border-slate-800 hover:border-amber-400/30 hover:shadow-amber-500/5"
                 : "bg-white border-stone-200 hover:border-amber-200 hover:shadow-stone-200"
@@ -1294,8 +1294,8 @@ const AchievementsSection = ({ darkMode }) => (
 // ═══════════════════════════════════════════════════════════════
 
 const LeadershipSection = ({ darkMode }) => (
-  <section id="leadership" className={`py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
-    <div className="max-w-6xl mx-auto px-6">
+  <section id="leadership" className={`py-14 md:py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
       <Reveal>
         <SectionHeader
           eyebrow="Leadership & Experience"
@@ -1313,24 +1313,26 @@ const LeadershipSection = ({ darkMode }) => (
                 : "bg-white border-t border-r border-b border-stone-200 hover:shadow-stone-200"
             }`}>
               {/* Header strip */}
-              <div className={`px-5 py-4 flex items-center gap-3 border-b ${darkMode ? "border-slate-700 bg-slate-800/60" : "border-stone-100 bg-stone-50"}`}>
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-600"}`}>
-                  <Users size={16} />
+              <div className={`px-4 sm:px-5 py-3 sm:py-4 border-b ${darkMode ? "border-slate-700 bg-slate-800/60" : "border-stone-100 bg-stone-50"}`}>
+                <div className="flex items-start gap-3">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-600"}`}>
+                    <Users size={16} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className={`font-bold text-sm sm:text-base leading-tight ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h3>
+                    <p className={`text-xs font-semibold mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
+                    <span className={`inline-block mt-1.5 text-xs font-semibold px-2 py-0.5 rounded-md ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-50 text-amber-700"}`}>
+                      {role.period}
+                    </span>
+                  </div>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className={`font-bold text-base leading-tight truncate ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h3>
-                  <p className={`text-xs font-semibold truncate ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
-                </div>
-                <span className={`text-xs font-semibold px-2 py-1 rounded-md flex-shrink-0 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-50 text-amber-700"}`}>
-                  {role.period}
-                </span>
               </div>
               {/* Points */}
-              <ul className="px-5 py-4 space-y-2">
+              <ul className="px-4 sm:px-5 py-3 sm:py-4 space-y-2">
                 {role.points.map(pt => (
-                  <li key={pt} className={`flex items-center gap-2.5 text-sm ${darkMode ? "text-slate-300" : "text-stone-700"}`}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
-                    <span className="truncate">{pt}</span>
+                  <li key={pt} className={`flex items-start gap-2.5 text-sm ${darkMode ? "text-slate-300" : "text-stone-700"}`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0 mt-1.5" />
+                    <span className="leading-snug">{pt}</span>
                   </li>
                 ))}
               </ul>
@@ -1369,8 +1371,8 @@ const ContactSection = ({ darkMode }) => {
     : "bg-stone-50 border-stone-300 text-stone-900 placeholder-stone-400 focus:border-amber-500";
 
   return (
-    <section id="contact" className={`py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="contact" className={`py-14 md:py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <Reveal>
           <SectionHeader eyebrow="Get In Touch" title="Let's Connect"
             subtitle="Open to full-time roles, internships, and research collaborations in power electronics and EV charging."
@@ -1402,7 +1404,7 @@ const ContactSection = ({ darkMode }) => {
                   </div>
                   <div>
                     <p className={`text-xs font-semibold uppercase tracking-wide ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{item.label}</p>
-                    <p className={`text-sm font-medium ${darkMode ? "text-slate-300" : "text-stone-700"}`}>{item.value}</p>
+                    <p className={`text-sm font-medium truncate max-w-[200px] sm:max-w-none ${darkMode ? "text-slate-300" : "text-stone-700"}`}>{item.value}</p>
                   </div>
                 </a>
               ))}
@@ -1410,7 +1412,7 @@ const ContactSection = ({ darkMode }) => {
           </Reveal>
 
           <Reveal direction="right" delay={150}>
-            <form onSubmit={handleSubmit} className={`p-6 rounded-2xl border ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200 shadow-sm"}`}>
+            <form onSubmit={handleSubmit} className={`p-4 sm:p-6 rounded-2xl border ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200 shadow-sm"}`}>
               {status === "success" ? (
                 <div className="flex flex-col items-center justify-center h-64 text-center">
                   <CheckCircle size={48} className="text-emerald-500 mb-4" />
@@ -1469,7 +1471,7 @@ const ContactSection = ({ darkMode }) => {
 
 const Footer = ({ darkMode }) => (
   <footer className={`py-8 border-t ${darkMode ? "bg-slate-950 border-slate-800" : "bg-white border-stone-200"}`}>
-    <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div>
         <span className={`font-serif font-bold ${darkMode ? "text-white" : "text-stone-900"}`}>Aditya Kumar</span>
         <span className={`text-xs ml-2 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>Power Electronics & EV Charging Engineer</span>
