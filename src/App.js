@@ -272,9 +272,9 @@ const leadership = [
     org: "Rendezvous — IIT Delhi",
     period: "Apr – Jun 2021",
     points: [
-      "Boosted participation in monoact competition at Rendezvous cultural fest",
-      "Published social media content to enhance outreach and event visibility",
-      "Drove event registrations via targeted digital campaigns across platforms",
+      "Boosted student participation in monoact competition at Rendezvous",
+      "Published social media content to boost outreach and event visibility",
+      "Drove event registrations via targeted digital campaigns",
     ],
   },
   {
@@ -1307,32 +1307,32 @@ const LeadershipSection = ({ darkMode }) => (
       <div className="grid md:grid-cols-2 gap-5">
         {leadership.map((role, i) => (
           <Reveal key={role.role} delay={i * 80}>
-            <div className={`h-full rounded-2xl border-l-4 border-amber-500 overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-lg ${
+            <div className={`h-[260px] rounded-2xl border-l-4 border-amber-500 overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-lg flex flex-col ${
               darkMode
                 ? "bg-slate-800 border-t border-r border-b border-slate-700 hover:shadow-amber-500/5"
                 : "bg-white border-t border-r border-b border-stone-200 hover:shadow-stone-200"
             }`}>
               {/* Header strip */}
-              <div className={`px-4 sm:px-5 py-3 sm:py-4 border-b ${darkMode ? "border-slate-700 bg-slate-800/60" : "border-stone-100 bg-stone-50"}`}>
-                <div className="flex items-start gap-3">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-600"}`}>
+              <div className={`px-5 py-3.5 border-b flex-shrink-0 ${darkMode ? "border-slate-700 bg-slate-800/60" : "border-stone-100 bg-stone-50"}`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-600"}`}>
                     <Users size={16} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className={`font-bold text-sm sm:text-base leading-tight ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h3>
-                    <p className={`text-xs font-semibold mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
-                    <span className={`inline-block mt-1.5 text-xs font-semibold px-2 py-0.5 rounded-md ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-50 text-amber-700"}`}>
-                      {role.period}
-                    </span>
+                    <h3 className={`font-bold text-sm leading-tight truncate ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h3>
+                    <p className={`text-xs font-semibold mt-0.5 truncate ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
                   </div>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-md flex-shrink-0 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-50 text-amber-700"}`}>
+                    {role.period}
+                  </span>
                 </div>
               </div>
               {/* Points */}
-              <ul className="px-4 sm:px-5 py-3 sm:py-4 space-y-2">
+              <ul className="px-5 py-4 space-y-2.5 flex-1">
                 {role.points.map(pt => (
-                  <li key={pt} className={`flex items-start gap-2.5 text-sm ${darkMode ? "text-slate-300" : "text-stone-700"}`}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0 mt-1.5" />
-                    <span className="leading-snug">{pt}</span>
+                  <li key={pt} className={`flex items-center gap-2.5 text-xs ${darkMode ? "text-slate-300" : "text-stone-700"}`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
+                    <span className="truncate">{pt}</span>
                   </li>
                 ))}
               </ul>
