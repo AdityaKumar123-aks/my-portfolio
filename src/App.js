@@ -98,7 +98,7 @@ const projects = [
     period: "Jan – Apr 2025",
     highlight: "7.46% Efficiency Improvement",
     description:
-      "Analyzed Power Reduction Factor (PRF) control strategies for loss minimization in induction motor drives, demonstrating 7.46% efficiency improvement over constant V/f control. Evaluated adaptive control methods eliminating dependency on motor parameter estimation, comparing performance across 17 torque-speed test points.",
+      "Analyzed PRF control strategies for loss minimization in induction motor drives, demonstrating 7.46% efficiency gain over constant V/f control. Compared adaptive control methods across 17 torque-speed test points.",
     tools: ["MATLAB/Simulink", "PRF Control", "Adaptive Control", "Motor Drives"],
     github: "https://github.com/AdityaKumar123-aks/Academic_Projects/tree/main/Loss_minimization_Control_of_an_Induction_Motor_Drive",
     image: "/Induction_motor_drive.png",
@@ -272,9 +272,9 @@ const leadership = [
     org: "Rendezvous — IIT Delhi",
     period: "Apr – Jun 2021",
     points: [
-      "Conducted online sessions boosting participation in the monoact competition at cultural fest",
-      "Published content across social media platforms to enhance outreach and event visibility",
-      "Drove increased event registrations through targeted digital campaigns across platforms",
+      "Boosted participation in monoact competition at Rendezvous cultural fest",
+      "Published social media content to enhance outreach and event visibility",
+      "Drove event registrations via targeted digital campaigns across platforms",
     ],
   },
   {
