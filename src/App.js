@@ -224,36 +224,36 @@ const coursework = [
 const education = [
   {
     degree: "M.Tech, Energy Science & Engineering",
-    institution: "IIT Bombay",
+    institution: "Indian Institute of Technology Bombay",
     period: "2024 – Present",
     gpa: "CPI: 9.19 / 10",
-    note: "Thesis: LLC Resonant Converter for EV Charging (1 kW, 48 V)",
+    focus: "Power Converters, Electric Drives, EV Charging",
     logo: "/IITB_logo.png",
   },
   {
     degree: "B.Tech, Electrical Engineering",
-    institution: "REC Bijnor (AKTU)",
+    institution: "Rajkiya Engineering College Bijnor",
     period: "2019 – 2023",
     gpa: "GPA: 8.81 / 10",
-    note: "AA Grade in Energy Efficient Industrial Drives | Final Project: Omni-directional Robot",
+    focus: "Power Electronics, Electrical Machines",
     logo: "/RECB_logo.jpg",
   },
   {
     degree: "Intermediate (Class XII) — PCM",
-    institution: "UP Board",
+    institution: "Ch. Sughar Singh Inter College",
     period: "2016 – 2018",
-    gpa: "District 4th Rank",
-    note: "Awarded U.P. Chief Minister Award for securing 4th rank in district intermediate examination",
+    gpa: "90.00% | Rank 4 in District",
+    focus: "Physics, Chemistry, Mathematics",
     logo: "/CSSIC_logo.jpg",
   },
 ];
 
 const achievements = [
-  { title: "GATE Top 2.55 Percentile", emoji: "🏆", description: "EE 2024 — top 2.55% of 59,000+ candidates nationwide. One of the highest scorers among electrical engineering aspirants.", year: "2024", gold: true },
-  { title: "IIT Bombay M.Tech Admission", emoji: "🎓", description: "Admitted to prestigious IIT Bombay in Energy Science & Engineering specialization with a current CPI of 9.19 / 10.", year: "2024", gold: true },
-  { title: "AA Grade — Industrial Drives", emoji: "⭐", description: "Awarded the highest possible grade (AA) in Energy Efficient Industrial Drives at AKTU — recognizing exceptional academic performance.", year: "2023", gold: false },
-  { title: "U.P. Chief Minister Award", emoji: "🏅", description: "Personally awarded by Hon. Chief Minister Yogi Adityanath for securing 4th rank in the entire district in the Class XII board examination.", year: "2018", gold: true },
-  { title: "Vivek Shukla Memorial Award", emoji: "🥇", description: "Recognised with the Vivek Shukla Memorial Award for achieving 7th rank in the district SSC (Class X) examination.", year: "2016", gold: false },
+  { title: "GATE Top 2.55 Percentile", emoji: "🏆", description: "EE 2024 — ranked in the top 2.55% among 59,000+ candidates nationwide, earning direct admission to IIT Bombay.", year: "2024" },
+  { title: "IIT Bombay M.Tech — CPI 9.19", emoji: "🎓", description: "Admitted to IIT Bombay's Energy Science & Engineering M.Tech program and achieved a CPI of 9.19 / 10 through ongoing coursework.", year: "2024" },
+  { title: "AA Grade — Industrial Drives", emoji: "⭐", description: "Awarded the highest possible grade (AA) in Energy Efficient Industrial Drives at IIT Bombay — recognising outstanding academic performance.", year: "2025" },
+  { title: "U.P. Chief Minister Award", emoji: "🏅", description: "Personally awarded by Hon. Chief Minister Yogi Adityanath for securing 4th rank in the entire district in the Class XII board examination.", year: "2018" },
+  { title: "Vivek Shukla Memorial Award", emoji: "🥇", description: "Recognised with the Vivek Shukla Memorial Award for achieving 7th rank in the district SSC (Class X) board examination.", year: "2016" },
 ];
 
 const leadership = [
@@ -261,37 +261,44 @@ const leadership = [
     role: "Corporate Relations Coordinator",
     org: "Energy Day 2025 — IIT Bombay",
     period: "Mar – Apr 2025",
+    emoji: "🎯",
     points: [
-      "Managed 40+ industry coordinators & 16-member core team for 2-day event",
+      "Led 16-member core team & coordinated 40+ industry partners",
       "Achieved 100% YoY growth in student turnout (16 → 40 teams)",
-      "Organized 3 Energy Case Competitions for 500+ students",
+      "Organised 3 Energy Case Competitions for 500+ students",
     ],
   },
   {
-    role: "Teaching Assistant — Energy Lab III",
-    org: "DESE, IIT Bombay",
-    period: "Aug 2025 – Present",
+    role: "Campus Ambassador",
+    org: "Texas Instruments — IIT Bombay",
+    period: "2024 – Present",
+    emoji: "🚀",
     points: [
-      "Managed lab operations with 2 TAs for 18 enrolled students",
-      "Evaluated performance through vivas and report assessments",
+      "Promoted TI DSP & microcontroller products to peers and faculty",
+      "Conducted hands-on TMS320 DSP workshops for 20+ students",
+      "Served as on-campus technical resource for TI product queries",
     ],
   },
   {
     role: "Teaching Assistant — Electrical Networks Lab",
     org: "DESE, IIT Bombay",
     period: "Jan – Apr 2025",
+    emoji: "⚡",
     points: [
-      "Collaborated with 12 TAs to evaluate 60+ students",
-      "Designed & tested frequency response of passive circuits",
+      "Collaborated with 12 TAs to evaluate 60+ students on lab work",
+      "Designed & tested passive circuit frequency response experiments",
+      "Conducted pre-lab briefings and assessed lab reports each week",
     ],
   },
   {
     role: "Event Coordinator — Advitya / Abhyuday",
     org: "IIT Bombay (Asia's Largest Student-Run NGO)",
     period: "Dec 2024 – Jan 2025",
+    emoji: "🤝",
     points: [
-      "Organized health check-ups for 100+ community residents",
-      "Distributed 3000+ refreshment packages and stationery items",
+      "Organised health check-ups for 100+ community residents",
+      "Distributed 3000+ refreshment packages to underprivileged families",
+      "Coordinated 15+ volunteers across camp locations over 2 days",
     ],
   },
 ];
@@ -512,7 +519,7 @@ const HeroSection = ({ darkMode }) => {
 
             <Reveal delay={140}>
               <h1 className={`text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight mb-5 ${darkMode ? "text-white" : "text-stone-900"}`}>
-                Aditya<br />Kumar
+                Aditya Kumar
               </h1>
             </Reveal>
 
@@ -960,13 +967,14 @@ const EducationSection = ({ darkMode }) => (
         {education.map((edu, i) => (
           <Reveal key={edu.institution + edu.period} delay={i * 100}>
             <div className={`flex gap-5 p-6 rounded-2xl border transition-all hover:shadow-md ${
-              darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/20" : "bg-stone-50 border-stone-200 hover:border-amber-200"
+              darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/20" : "bg-white border-stone-200 hover:border-amber-200"
             }`}>
-              <div className={`w-14 h-14 rounded-xl border flex-shrink-0 flex items-center justify-center overflow-hidden ${
+              {/* Logo */}
+              <div className={`w-16 h-16 rounded-xl border flex-shrink-0 flex items-center justify-center overflow-hidden ${
                 darkMode ? "bg-slate-700 border-slate-600" : "bg-white border-stone-200 shadow-sm"
               }`}>
                 {edu.logo ? (
-                  <img src={edu.logo} alt={edu.institution} className="w-10 h-10 object-contain"
+                  <img src={edu.logo} alt={edu.institution} className="w-12 h-12 object-contain"
                     onError={e => { e.target.style.display = "none"; }} />
                 ) : (
                   <span className={`text-sm font-bold ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
@@ -974,18 +982,25 @@ const EducationSection = ({ darkMode }) => (
                   </span>
                 )}
               </div>
+              {/* Content */}
               <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-start justify-between gap-2">
+                <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                   <div>
-                    <h3 className={`font-bold text-base ${darkMode ? "text-white" : "text-stone-900"}`}>{edu.degree}</h3>
-                    <p className={`font-semibold mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{edu.institution}</p>
+                    <h3 className={`font-bold text-lg leading-tight ${darkMode ? "text-white" : "text-stone-900"}`}>{edu.institution}</h3>
+                    <p className={`font-medium mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{edu.degree}</p>
                   </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className={`text-sm font-bold ${darkMode ? "text-white" : "text-stone-800"}`}>{edu.gpa}</p>
-                    <p className={`text-xs mt-0.5 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{edu.period}</p>
-                  </div>
+                  <span className={`text-xs font-semibold px-2 py-1 rounded-md flex-shrink-0 ${
+                    darkMode ? "bg-slate-700 text-slate-300" : "bg-stone-100 text-stone-600"
+                  }`}>{edu.period}</span>
                 </div>
-                <p className={`text-sm mt-2 ${darkMode ? "text-slate-400" : "text-stone-500"}`}>{edu.note}</p>
+                {/* GPA badge */}
+                <span className={`inline-block text-xs font-bold px-2.5 py-1 rounded-md mb-2 ${
+                  darkMode ? "bg-amber-400/15 text-amber-400 border border-amber-400/20" : "bg-amber-50 text-amber-700 border border-amber-200"
+                }`}>{edu.gpa}</span>
+                {/* Focus */}
+                <p className={`text-xs mt-1 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>
+                  <span className="font-bold uppercase tracking-wider mr-1">Focus:</span>{edu.focus}
+                </p>
               </div>
             </div>
           </Reveal>
@@ -1020,9 +1035,7 @@ const AchievementsSection = ({ darkMode }) => (
             }`}>
               <div className="text-5xl mb-5">{ach.emoji}</div>
               <div className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold mb-3 ${
-                ach.gold
-                  ? darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-700"
-                  : darkMode ? "bg-slate-700 text-slate-400" : "bg-stone-100 text-stone-600"
+                darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-700"
               }`}>{ach.year}</div>
               <h3 className={`font-bold text-lg leading-snug mb-3 ${darkMode ? "text-white" : "text-stone-900"}`}>
                 {ach.title}
@@ -1042,8 +1055,6 @@ const AchievementsSection = ({ darkMode }) => (
 // LEADERSHIP
 // ═══════════════════════════════════════════════════════════════
 
-const leadershipEmoji = ["🎯", "🔬", "⚡", "🤝"];
-
 const LeadershipSection = ({ darkMode }) => (
   <section id="leadership" className={`py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
     <div className="max-w-6xl mx-auto px-6">
@@ -1055,27 +1066,31 @@ const LeadershipSection = ({ darkMode }) => (
           darkMode={darkMode}
         />
       </Reveal>
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-5">
         {leadership.map((role, i) => (
           <Reveal key={role.role} delay={i * 80}>
-            <div className={`h-full p-7 rounded-2xl border transition-all hover:-translate-y-1 hover:shadow-lg ${
+            <div className={`h-full rounded-2xl border-l-4 border-amber-500 overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-lg ${
               darkMode
-                ? "bg-slate-800 border-slate-700 hover:border-amber-400/30 hover:shadow-amber-500/5"
-                : "bg-stone-50 border-stone-200 hover:border-amber-200 hover:shadow-stone-200"
+                ? "bg-slate-800 border-t border-r border-b border-slate-700 hover:shadow-amber-500/5"
+                : "bg-white border-t border-r border-b border-stone-200 hover:shadow-stone-200"
             }`}>
-              <div className="text-4xl mb-5">{leadershipEmoji[i] || "🌟"}</div>
-              <div className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold mb-3 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-700"}`}>
-                {role.period}
+              {/* Header strip */}
+              <div className={`px-5 py-4 flex items-center gap-3 border-b ${darkMode ? "border-slate-700 bg-slate-800/60" : "border-stone-100 bg-stone-50"}`}>
+                <span className="text-2xl">{role.emoji}</span>
+                <div className="min-w-0 flex-1">
+                  <h3 className={`font-bold text-base leading-tight truncate ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h3>
+                  <p className={`text-xs font-semibold truncate ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
+                </div>
+                <span className={`text-xs font-semibold px-2 py-1 rounded-md flex-shrink-0 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-50 text-amber-700"}`}>
+                  {role.period}
+                </span>
               </div>
-              <h3 className={`font-bold text-lg leading-snug mb-1 ${darkMode ? "text-white" : "text-stone-900"}`}>
-                {role.role}
-              </h3>
-              <p className={`text-sm font-semibold mb-4 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
-              <ul className="space-y-2.5">
+              {/* Points */}
+              <ul className="px-5 py-4 space-y-2">
                 {role.points.map(pt => (
-                  <li key={pt} className={`flex items-start gap-3 text-sm leading-relaxed ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
-                    {pt}
+                  <li key={pt} className={`flex items-center gap-2.5 text-sm ${darkMode ? "text-slate-300" : "text-stone-700"}`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
+                    <span className="truncate">{pt}</span>
                   </li>
                 ))}
               </ul>
@@ -1232,7 +1247,7 @@ const Footer = ({ darkMode }) => (
           </a>
         ))}
       </div>
-      <p className={`text-xs ${darkMode ? "text-slate-600" : "text-stone-400"}`}>© 2026 Aditya Kumar. All rights reserved.</p>
+      <p className={`text-xs ${darkMode ? "text-slate-600" : "text-stone-400"}`}>© {new Date().getFullYear()} Aditya Kumar. All rights reserved.</p>
     </div>
   </footer>
 );
