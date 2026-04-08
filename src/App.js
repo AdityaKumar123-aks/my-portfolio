@@ -143,7 +143,7 @@ const projects = [
     period: "Jan – Apr 2023",
     highlight: "360° Holonomic Motion · Wireless Control",
     description:
-      "Built an Arduino-based omnidirectional robot using mecanum wheels for 360° holonomic motion. Wireless Bluetooth control with real-time motor speed regulation.",
+      "Built an Arduino-based omnidirectional robot using omni-directional wheels for 360° holonomic motion. Wireless Bluetooth control with real-time motor speed regulation.",
     tools: ["Arduino UNO", "Bluetooth HC-05", "Motor Control", "C"],
     github: "https://github.com/AdityaKumar123-aks/Academic_Projects/tree/main/Omni-directional_Robotic_Vehicle",
     image: "/Omnidirectional_vehicle.png",
