@@ -5,7 +5,6 @@ import {
   Zap, Cpu, Activity, Globe, Wrench, Users, Terminal,
   FileText, ArrowUp,
 } from "lucide-react";
-import { Analytics } from "@vercel/analytics/react";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA
@@ -132,7 +131,7 @@ const projects = [
       "Comprehensive analysis of EV fast-charging standards and grid integration challenges for heavy-duty vehicles, covering V2G technology and renewable energy integration.",
     tools: ["EV Standards", "Grid Integration", "V2G", "Renewables"],
     github: "https://github.com/AdityaKumar123-aks/Academic_Projects/tree/main/EV_charging_infrastructure_for_Heavy_Duty_Vehicles",
-    image: null,
+    image: "/HDV_charging.png",
     featured: false,
     gradient: "from-green-500 to-emerald-600",
   },
@@ -147,7 +146,7 @@ const projects = [
       "Built an Arduino-based omnidirectional robot using mecanum wheels for 360° holonomic motion. Wireless Bluetooth control with real-time motor speed regulation.",
     tools: ["Arduino UNO", "Bluetooth HC-05", "Motor Control", "C"],
     github: "https://github.com/AdityaKumar123-aks/Academic_Projects/tree/main/Omni-directional_Robotic_Vehicle",
-    image: null,
+    image: "/Omnidirectional_vehicle.png",
     featured: false,
     gradient: "from-indigo-500 to-purple-600",
   },
@@ -1253,7 +1252,7 @@ const Footer = ({ darkMode }) => (
   </footer>
 );
 
-// ═════════════════════════════════════════���═════════════════════
+// ═══════════════════════════════════════════════════════════════
 // SCROLL TO TOP
 // ═══════════════════════════════════════════════════════════════
 
@@ -1306,7 +1305,6 @@ export default function App() {
       <ContactSection darkMode={darkMode} />
       <Footer darkMode={darkMode} />
       <ScrollToTop darkMode={darkMode} />
-      <Analytics />
     </div>
   );
 }
