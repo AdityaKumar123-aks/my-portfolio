@@ -261,7 +261,6 @@ const leadership = [
     role: "Corporate Relations Coordinator",
     org: "Energy Day 2025 — IIT Bombay",
     period: "Mar – Apr 2025",
-    emoji: "🎯",
     points: [
       "Led 16-member core team & coordinated 40+ industry partners",
       "Achieved 100% YoY growth in student turnout (16 → 40 teams)",
@@ -272,7 +271,6 @@ const leadership = [
     role: "Campus Ambassador",
     org: "Rendezvous — IIT Delhi",
     period: "Apr – Jun 2021",
-    emoji: "🎭",
     points: [
       "Conducted online sessions boosting participation in the monoact competition at cultural fest",
       "Published content across social media platforms to enhance outreach and event visibility",
@@ -283,7 +281,6 @@ const leadership = [
     role: "TA — Electrical Networks Lab",
     org: "DESE, IIT Bombay",
     period: "Jan – Apr 2025",
-    emoji: "⚡",
     points: [
       "Collaborated with 12 TAs to evaluate 60+ students on lab work",
       "Designed & tested passive circuit frequency response experiments",
@@ -294,7 +291,6 @@ const leadership = [
     role: "Event Coordinator — Advitya",
     org: "Abhyuday, IIT Bombay",
     period: "Dec 2024 – Jan 2025",
-    emoji: "🤝",
     points: [
       "Organised health check-ups for 100+ community residents",
       "Distributed 3000+ refreshment packages to underprivileged families",
@@ -508,7 +504,7 @@ const FloatingSparks = ({ darkMode }) => (
           fontSize: s.size,
           animationDuration: s.duration,
           animationDelay: s.delay,
-          color: darkMode ? "rgba(251,191,36,0.22)" : "rgba(180,83,9,0.15)",
+          color: darkMode ? "rgba(251,191,36,0.6)" : "rgba(180,83,9,0.45)",
         }}>
         {s.symbol}
       </span>
@@ -1287,7 +1283,9 @@ const LeadershipSection = ({ darkMode }) => (
             }`}>
               {/* Header strip */}
               <div className={`px-5 py-4 flex items-center gap-3 border-b ${darkMode ? "border-slate-700 bg-slate-800/60" : "border-stone-100 bg-stone-50"}`}>
-                <span className="text-2xl">{role.emoji}</span>
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-600"}`}>
+                  <Users size={16} />
+                </div>
                 <div className="min-w-0 flex-1">
                   <h3 className={`font-bold text-base leading-tight truncate ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h3>
                   <p className={`text-xs font-semibold truncate ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
