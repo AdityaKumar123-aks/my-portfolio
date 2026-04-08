@@ -81,9 +81,9 @@ const projects = [
     subtitle: "Performance Evaluation",
     category: "Power Quality",
     period: "Jan – Apr 2025",
-    highlight: "28% Current Ripple Reduction",
+    highlight: "22% THD Reduction",
     description:
-      "Analyzed and optimized a back-to-back 2-level VSC. Compared CSVPWM vs. STPWM strategies, achieving 28% reduction in current ripple with CSVPWM in MATLAB/Simulink.",
+      "Analyzed and optimized a back-to-back 2-level VSC. Compared CSVPWM vs. STPWM modulation strategies, achieving 22% reduction in source current THD with CSVPWM in MATLAB/Simulink.",
     tools: ["MATLAB/Simulink", "CSVPWM", "STPWM", "Power Quality"],
     github: "https://github.com/AdityaKumar123-aks/Academic_Projects/tree/main/Performance_Evaluation_of_Back-to-Back_2-Level_VSC",
     image: "/Back-to-back_VSC.png",
@@ -98,8 +98,8 @@ const projects = [
     period: "Jan – Apr 2025",
     highlight: "7.46% Efficiency Improvement",
     description:
-      "Implemented flux-optimization loss minimization on TMS320F28379D DSP for induction motor drives, achieving measurable efficiency gains across various load conditions.",
-    tools: ["Code Composer Studio", "TMS320F28379D", "MATLAB", "Motor Control"],
+      "Analyzed Power Reduction Factor (PRF) control strategies for loss minimization in induction motor drives, demonstrating 7.46% efficiency improvement over constant V/f control. Evaluated adaptive control methods eliminating dependency on motor parameter estimation, comparing performance across 17 torque-speed test points.",
+    tools: ["MATLAB/Simulink", "PRF Control", "Adaptive Control", "Motor Drives"],
     github: "https://github.com/AdityaKumar123-aks/Academic_Projects/tree/main/Loss_minimization_Control_of_an_Induction_Motor_Drive",
     image: "/Induction_motor_drive.png",
     featured: false,
