@@ -272,9 +272,9 @@ const leadership = [
     org: "Rendezvous — IIT Delhi",
     period: "Apr – Jun 2021",
     points: [
-      "Boosted student participation in monoact competition at Rendezvous",
-      "Published social media content to boost outreach and event visibility",
-      "Drove event registrations via targeted digital campaigns",
+      "Boosted participation in monoact competition at Rendezvous cultural fest",
+      "Published social media content to enhance outreach and event visibility",
+      "Drove event registrations via targeted digital campaigns across platforms",
     ],
   },
   {
@@ -1304,42 +1304,49 @@ const LeadershipSection = ({ darkMode }) => (
           darkMode={darkMode} center
         />
       </Reveal>
-      <div className="grid md:grid-cols-2 gap-5">
+
+      <div className={`rounded-2xl overflow-hidden border ${darkMode ? "border-slate-700" : "border-stone-200"}`}>
         {leadership.map((role, i) => (
-          <Reveal key={role.role} delay={i * 80}>
-            <div className={`h-[260px] rounded-2xl border-l-4 border-amber-500 overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-lg flex flex-col ${
-              darkMode
-                ? "bg-slate-800 border-t border-r border-b border-slate-700 hover:shadow-amber-500/5"
-                : "bg-white border-t border-r border-b border-stone-200 hover:shadow-stone-200"
-            }`}>
-              {/* Header strip */}
-              <div className={`px-5 py-3.5 border-b flex-shrink-0 ${darkMode ? "border-slate-700 bg-slate-800/60" : "border-stone-100 bg-stone-50"}`}>
-                <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-600"}`}>
-                    <Users size={16} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className={`font-bold text-sm leading-tight truncate ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h3>
-                    <p className={`text-xs font-semibold mt-0.5 truncate ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
-                  </div>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-md flex-shrink-0 ${darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-50 text-amber-700"}`}>
-                    {role.period}
-                  </span>
+          <Reveal key={role.role} delay={i * 80} direction="up">
+            <div className={`group flex flex-col md:flex-row md:items-start gap-0 transition-colors duration-200 ${
+              i !== leadership.length - 1
+                ? darkMode ? "border-b border-slate-700/80" : "border-b border-stone-100"
+                : ""
+            } ${darkMode ? "hover:bg-slate-800/60" : "hover:bg-amber-50/40"}`}>
+
+              {/* LEFT — role meta */}
+              <div className={`flex-shrink-0 md:w-72 px-6 py-6 flex items-start gap-4 ${
+                darkMode ? "md:border-r border-slate-700/80" : "md:border-r border-stone-100"
+              }`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                  darkMode ? "bg-amber-400/10 text-amber-400 group-hover:bg-amber-400/20" : "bg-amber-100 text-amber-600 group-hover:bg-amber-200"
+                }`}>
+                  <Users size={18} />
+                </div>
+                <div className="min-w-0">
+                  <h3 className={`font-bold text-base leading-snug ${darkMode ? "text-white" : "text-stone-900"}`}>{role.role}</h3>
+                  <p className={`text-sm font-semibold mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{role.org}</p>
+                  <span className={`inline-block mt-2 text-xs font-medium px-2.5 py-1 rounded-full ${
+                    darkMode ? "bg-slate-700 text-slate-400" : "bg-stone-100 text-stone-500"
+                  }`}>{role.period}</span>
                 </div>
               </div>
-              {/* Points */}
-              <ul className="px-5 py-4 space-y-2.5 flex-1">
-                {role.points.map(pt => (
-                  <li key={pt} className={`flex items-center gap-2.5 text-xs ${darkMode ? "text-slate-300" : "text-stone-700"}`}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
-                    <span className="truncate">{pt}</span>
+
+              {/* RIGHT — bullet points */}
+              <ul className="flex-1 px-6 py-6 space-y-3">
+                {role.points.map((pt, j) => (
+                  <li key={pt} className={`flex items-start gap-3 text-sm leading-relaxed ${darkMode ? "text-slate-300" : "text-stone-700"}`}>
+                    <span className={`mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0 ${darkMode ? "bg-amber-400" : "bg-amber-500"}`} />
+                    {pt}
                   </li>
                 ))}
               </ul>
+
             </div>
           </Reveal>
         ))}
       </div>
+
     </div>
   </section>
 );
