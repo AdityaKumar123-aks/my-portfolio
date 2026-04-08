@@ -25,7 +25,7 @@ const profile = {
 const stats = [
   { value: 1,   suffix: " kW",  label: "LLC Converter",  sub: "EV Charging Thesis" },
   { value: 3.3, suffix: " kW",  label: "PFC Converter",  sub: "Hardware Built",     dec: 1 },
-  { value: 22,  suffix: "%",    label: "THD Reduction",  sub: "Active Filter Design" },
+  { value: 22,  suffix: "%",    label: "THD Reduction",  sub: "VSC Optimization" },
   { value: 8,   suffix: "+",    label: "Real Projects",  sub: "Simulation to Hardware" },
 ];
 
@@ -168,7 +168,7 @@ const skillGroups = [
   {
     title: "Programming",
     icon: "terminal",
-    items: ["C (DSP/Embedded)", "MATLAB", "Python", "Arduino IDE", "HTML/CSS"],
+    items: ["C / Embedded C", "MATLAB", "Python", "Arduino IDE", "HTML/CSS"],
   },
   {
     title: "Technical Domains",
@@ -280,7 +280,7 @@ const leadership = [
     ],
   },
   {
-    role: "Teaching Assistant — Electrical Networks Lab",
+    role: "TA — Electrical Networks Lab",
     org: "DESE, IIT Bombay",
     period: "Jan – Apr 2025",
     emoji: "⚡",
@@ -381,6 +381,139 @@ const TypeWriter = ({ words }) => {
 
 const SectionDivider = ({ darkMode }) => (
   <div className={`w-full h-px ${darkMode ? "bg-gradient-to-r from-transparent via-slate-700 to-transparent" : "bg-gradient-to-r from-transparent via-stone-300 to-transparent"}`} />
+);
+
+// ── Global keyframes injected once ─────────────────────────────
+const GlobalStyles = () => {
+  useEffect(() => {
+    const el = document.createElement("style");
+    el.id = "portfolio-keyframes";
+    if (!document.getElementById("portfolio-keyframes")) {
+      el.textContent = `
+        @keyframes floatSpark {
+          0%   { transform: translateY(0) scale(1); opacity: 0; }
+          10%  { opacity: 1; }
+          80%  { opacity: 0.6; }
+          100% { transform: translateY(-520px) scale(0.4); opacity: 0; }
+        }
+        @keyframes waveScroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes glowPulse {
+          0%, 100% { opacity: 0.35; }
+          50%       { opacity: 0.65; }
+        }
+        @keyframes slideInLeft {
+          from { opacity: 0; transform: translateX(-24px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+          from { opacity: 0; transform: translateX(24px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-floatSpark   { animation: floatSpark linear infinite; }
+        .animate-waveScroll   { animation: waveScroll linear infinite; }
+        .animate-glowPulse    { animation: glowPulse ease-in-out infinite; }
+      `;
+      document.head.appendChild(el);
+    }
+    return () => { const s = document.getElementById("portfolio-keyframes"); if (s) s.remove(); };
+  }, []);
+  return null;
+};
+
+// ── Scroll-progress bar ─────────────────────────────────────────
+const ScrollProgressBar = () => {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const fn = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      setPct(total > 0 ? (window.scrollY / total) * 100 : 0);
+    };
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[70] h-0.5 bg-transparent pointer-events-none">
+      <div className="h-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 transition-all duration-75 ease-out shadow-sm shadow-amber-400/40"
+        style={{ width: `${pct}%` }} />
+    </div>
+  );
+};
+
+// ── Hero background: animated oscilloscope waveform ─────────────
+const WaveformCanvas = ({ darkMode }) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let raf, t = 0;
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+    const waves = [
+      { freq: 0.018, amp: 38, phase: 0,           alpha: darkMode ? 0.18 : 0.13, lw: 2.5 },
+      { freq: 0.011, amp: 22, phase: Math.PI/2.5, alpha: darkMode ? 0.10 : 0.07, lw: 1.5 },
+      { freq: 0.028, amp: 14, phase: Math.PI/1.2, alpha: darkMode ? 0.06 : 0.04, lw: 1.0 },
+    ];
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cy = canvas.height * 0.72;
+      waves.forEach(w => {
+        ctx.beginPath();
+        ctx.strokeStyle = darkMode
+          ? `rgba(251,191,36,${w.alpha})`
+          : `rgba(180,83,9,${w.alpha})`;
+        ctx.lineWidth = w.lw;
+        ctx.shadowColor = darkMode ? "rgba(251,191,36,0.4)" : "rgba(217,119,6,0.25)";
+        ctx.shadowBlur = 6;
+        for (let x = 0; x <= canvas.width; x += 2) {
+          const y = cy + Math.sin(x * w.freq + t + w.phase) * w.amp;
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      });
+      t += 0.022;
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
+  }, [darkMode]);
+  return <canvas ref={ref} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden />;
+};
+
+// ── Floating electrical sparks (hero only) ──────────────────────
+const sparks = Array.from({ length: 14 }, (_, i) => ({
+  id: i,
+  symbol: ["⚡","∿","φ","~","Ω","∫"][i % 6],
+  left: `${(i * 7.1 + 3) % 96}%`,
+  delay: `${(i * 1.1) % 9}s`,
+  duration: `${10 + (i % 5) * 2.5}s`,
+  size: i % 3 === 0 ? "16px" : "11px",
+}));
+
+const FloatingSparks = ({ darkMode }) => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+    {sparks.map(s => (
+      <span key={s.id} className="absolute bottom-0 animate-floatSpark select-none"
+        style={{
+          left: s.left,
+          fontSize: s.size,
+          animationDuration: s.duration,
+          animationDelay: s.delay,
+          color: darkMode ? "rgba(251,191,36,0.22)" : "rgba(180,83,9,0.15)",
+        }}>
+        {s.symbol}
+      </span>
+    ))}
+  </div>
 );
 
 const SectionHeader = ({ eyebrow, title, subtitle, center = false, darkMode }) => (
@@ -486,14 +619,16 @@ const HeroSection = ({ darkMode }) => {
   const [imgErr, setImgErr] = useState(false);
   return (
     <section id="home"
-      className={`min-h-screen pt-16 flex items-center ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}
+      className={`relative min-h-screen pt-16 flex items-center overflow-hidden ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}
       style={{
         backgroundImage: darkMode
           ? "radial-gradient(circle, rgba(251,191,36,0.05) 1px, transparent 1px)"
           : "radial-gradient(circle, rgba(100,80,30,0.07) 1px, transparent 1px)",
         backgroundSize: "28px 28px",
       }}>
-      <div className="max-w-6xl mx-auto px-6 py-24 w-full">
+      <WaveformCanvas darkMode={darkMode} />
+      <FloatingSparks darkMode={darkMode} />
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 w-full">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
 
           {/* Left */}
@@ -1358,6 +1493,8 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   return (
     <div className={`font-sans ${darkMode ? "bg-slate-950 text-slate-100" : "bg-stone-50 text-stone-900"}`}>
+      <GlobalStyles />
+      <ScrollProgressBar />
       <Navbar darkMode={darkMode} toggleDark={() => setDarkMode(d => !d)} />
       <HeroSection darkMode={darkMode} />
       <StatsSection darkMode={darkMode} />
