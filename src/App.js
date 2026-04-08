@@ -25,7 +25,7 @@ const profile = {
 const stats = [
   { value: 1,   suffix: " kW",  label: "LLC Converter",  sub: "EV Charging Thesis" },
   { value: 3.3, suffix: " kW",  label: "PFC Converter",  sub: "Hardware Built",     dec: 1 },
-  { value: 28,  suffix: "%",    label: "Ripple Reduced", sub: "VSC Optimization" },
+  { value: 22,  suffix: "%",    label: "THD Reduction",  sub: "Active Filter Design" },
   { value: 8,   suffix: "+",    label: "Real Projects",  sub: "Simulation to Hardware" },
 ];
 
@@ -163,7 +163,7 @@ const skillGroups = [
   {
     title: "Design & Hardware",
     icon: "wrench",
-    items: ["Altium Designer", "KiCAD", "PCB Layout", "Transformer Design", "Hardware Testing", "LaTeX"],
+    items: ["Altium Designer", "PCB Layout", "Transformer Design", "Hardware Testing", "Digital Oscilloscope", "Electronic Loads", "Power & Energy Analyzer"],
   },
   {
     title: "Programming",
@@ -270,13 +270,13 @@ const leadership = [
   },
   {
     role: "Campus Ambassador",
-    org: "Texas Instruments — IIT Bombay",
-    period: "2024 – Present",
-    emoji: "🚀",
+    org: "Rendezvous — IIT Delhi",
+    period: "Apr – Jun 2021",
+    emoji: "🎭",
     points: [
-      "Promoted TI DSP & microcontroller products to peers and faculty",
-      "Conducted hands-on TMS320 DSP workshops for 20+ students",
-      "Served as on-campus technical resource for TI product queries",
+      "Conducted online sessions boosting participation in the monoact competition at cultural fest",
+      "Published content across social media platforms to enhance outreach and event visibility",
+      "Drove increased event registrations through targeted digital campaigns across platforms",
     ],
   },
   {
@@ -291,8 +291,8 @@ const leadership = [
     ],
   },
   {
-    role: "Event Coordinator — Advitya / Abhyuday",
-    org: "IIT Bombay (Asia's Largest Student-Run NGO)",
+    role: "Event Coordinator — Advitya",
+    org: "Abhyuday, IIT Bombay",
     period: "Dec 2024 – Jan 2025",
     emoji: "🤝",
     points: [
@@ -642,7 +642,7 @@ const AboutSection = ({ darkMode }) => (
     <div className="max-w-6xl mx-auto px-6">
       <div className="grid lg:grid-cols-2 gap-16 items-start">
         <Reveal>
-          <SectionHeader eyebrow="About Me" title="From Equations to Hardware" darkMode={darkMode} />
+          <SectionHeader eyebrow="About Me" title="From Equations to Hardware" darkMode={darkMode} center />
           <p className={`text-base leading-relaxed mb-5 ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
             I'm an M.Tech scholar at IIT Bombay with a passion for making power systems smarter and more efficient.
             My journey began with a GATE Top 2.55% rank among 59,000+ engineers — and that same rigor defines everything I build.
@@ -722,7 +722,7 @@ const ProjectsSection = ({ darkMode }) => {
             eyebrow="Featured Projects"
             title="Real Engineering. Real Results."
             subtitle="8 projects spanning EV charging, motor drives, and power quality — from MATLAB simulation to physical PCB hardware."
-            darkMode={darkMode}
+            darkMode={darkMode} center
           />
         </Reveal>
 
@@ -802,7 +802,11 @@ const ProjectsSection = ({ darkMode }) => {
 
                   <div className={`pt-3 border-t ${darkMode ? "border-slate-700" : "border-stone-100"}`}>
                     <a href={project.github} target="_blank" rel="noopener noreferrer"
-                      className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${darkMode ? "text-slate-400 hover:text-amber-400" : "text-stone-500 hover:text-amber-600"}`}>
+                      className={`flex items-center gap-2 text-sm font-semibold px-3 py-2 rounded-lg border transition-all hover:-translate-y-0.5 ${
+                        darkMode
+                          ? "border-amber-400/40 text-amber-400 hover:bg-amber-400/10 hover:border-amber-400"
+                          : "border-amber-500/60 text-amber-600 hover:bg-amber-50 hover:border-amber-500"
+                      }`}>
                       <Github size={14} />View on GitHub<ExternalLink size={12} className="ml-auto" />
                     </a>
                   </div>
@@ -820,38 +824,110 @@ const ProjectsSection = ({ darkMode }) => {
 // SKILLS
 // ═══════════════════════════════════════════════════════════════
 
-const skillIconEl = { cpu: <Cpu size={22} />, wrench: <Wrench size={22} />, terminal: <Terminal size={22} />, zap: <Zap size={22} /> };
+const skillIconEl = {
+  cpu:     <Cpu size={20} />,
+  wrench:  <Wrench size={20} />,
+  terminal:<Terminal size={20} />,
+  zap:     <Zap size={20} />,
+};
 
-const SkillsSection = ({ darkMode }) => (
-  <section id="skills" className={`py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
-    <div className="max-w-6xl mx-auto px-6">
-      <Reveal>
-        <SectionHeader eyebrow="Technical Skills" title="Tools of the Trade"
-          subtitle="Comprehensive proficiency across simulation, hardware design, programming, and power electronics domains."
-          darkMode={darkMode} />
-      </Reveal>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {skillGroups.map((group, i) => (
-          <Reveal key={group.title} delay={i * 80}>
-            <div className={`h-full p-6 rounded-2xl border ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200 shadow-sm"}`}>
-              <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${darkMode ? "bg-amber-400/10 text-amber-400" : "bg-amber-100 text-amber-600"}`}>
-                {skillIconEl[group.icon]}
+const skillIconLg = {
+  cpu:     <Cpu size={32} />,
+  wrench:  <Wrench size={32} />,
+  terminal:<Terminal size={32} />,
+  zap:     <Zap size={32} />,
+};
+
+const SkillsSection = ({ darkMode }) => {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const group = skillGroups[activeIdx];
+  return (
+    <section id="skills" className={`py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+      <div className="max-w-6xl mx-auto px-6">
+        <Reveal>
+          <SectionHeader eyebrow="Technical Skills" title="Tools of the Trade"
+            subtitle="Comprehensive proficiency across simulation, hardware design, programming, and power electronics domains."
+            darkMode={darkMode} center />
+        </Reveal>
+
+        {/* Category tab strip */}
+        <Reveal delay={80}>
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            {skillGroups.map((g, i) => (
+              <button key={g.title} onClick={() => setActiveIdx(i)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+                  activeIdx === i
+                    ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30 scale-105"
+                    : darkMode
+                      ? "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white border border-slate-700"
+                      : "bg-white text-stone-600 hover:bg-stone-100 border border-stone-200 shadow-sm"
+                }`}>
+                <span className={activeIdx === i ? "text-white" : darkMode ? "text-amber-400" : "text-amber-600"}>
+                  {skillIconEl[g.icon]}
+                </span>
+                {g.title}
+              </button>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* Active group panel */}
+        <Reveal>
+          <div className={`rounded-2xl overflow-hidden border ${
+            darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200 shadow-md"
+          }`}>
+            {/* Panel header */}
+            <div className={`flex items-center gap-4 px-8 py-6 border-b ${
+              darkMode ? "border-slate-800 bg-slate-800/50" : "border-stone-100 bg-stone-50"
+            }`}>
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+                darkMode ? "bg-amber-400/15 text-amber-400" : "bg-amber-100 text-amber-600"
+              }`}>
+                {skillIconLg[group.icon]}
               </div>
-              <h3 className={`font-bold text-base mb-4 ${darkMode ? "text-white" : "text-stone-900"}`}>{group.title}</h3>
-              <div className="flex flex-wrap gap-1.5">
-                {group.items.map(item => (
-                  <span key={item} className={`text-xs px-2.5 py-1 rounded-full font-medium border ${
-                    darkMode ? "bg-slate-800 text-slate-300 border-slate-700" : "bg-stone-50 text-stone-700 border-stone-200"
-                  }`}>{item}</span>
+              <div>
+                <h3 className={`font-bold text-xl ${darkMode ? "text-white" : "text-stone-900"}`}>{group.title}</h3>
+                <p className={`text-sm mt-0.5 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>
+                  {group.items.length} tools & technologies
+                </p>
+              </div>
+            </div>
+            {/* Skills grid */}
+            <div className="px-8 py-7">
+              <div className="flex flex-wrap gap-3">
+                {group.items.map((item, i) => (
+                  <span key={item}
+                    style={{ animationDelay: `${i * 40}ms` }}
+                    className={`px-4 py-2.5 rounded-xl text-sm font-semibold border transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-default ${
+                      darkMode
+                        ? "bg-slate-800 text-slate-200 border-slate-700 hover:border-amber-400/60 hover:text-amber-300 hover:bg-slate-700"
+                        : "bg-stone-50 text-stone-800 border-stone-200 hover:border-amber-400 hover:text-amber-700 hover:bg-amber-50 hover:shadow-amber-100"
+                    }`}>
+                    {item}
+                  </span>
                 ))}
               </div>
             </div>
-          </Reveal>
-        ))}
+          </div>
+        </Reveal>
+
+        {/* All skills overview strip */}
+        <Reveal delay={120}>
+          <div className={`mt-6 rounded-xl px-6 py-4 ${darkMode ? "bg-slate-900/60 border border-slate-800" : "bg-stone-100/80 border border-stone-200"}`}>
+            <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>All Skills at a Glance</p>
+            <div className="flex flex-wrap gap-1.5">
+              {skillGroups.flatMap(g => g.items).map(item => (
+                <span key={item} className={`text-xs px-2 py-0.5 rounded-md font-medium ${
+                  darkMode ? "bg-slate-800 text-slate-400" : "bg-white text-stone-600 border border-stone-200"
+                }`}>{item}</span>
+              ))}
+            </div>
+          </div>
+        </Reveal>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // ═══════════════════════════════════════════════════════════════
 // CERTIFICATIONS
@@ -873,7 +949,7 @@ const CertificationsSection = ({ darkMode }) => (
       <Reveal>
         <SectionHeader eyebrow="Professional Certifications" title="Continuous Learning"
           subtitle="Industry-recognized certifications in DSP, EV technology, IoT, and professional development."
-          darkMode={darkMode} />
+          darkMode={darkMode} center />
       </Reveal>
       <div className="grid md:grid-cols-2 gap-6">
         {certifications.map((cert, i) => (
@@ -918,7 +994,7 @@ const CourseworkSection = ({ darkMode }) => (
       <Reveal>
         <SectionHeader eyebrow="Relevant Coursework" title="Specialized Curriculum"
           subtitle="Graduate-level courses at IIT Bombay focused on power electronics, EV systems, and motor drives."
-          darkMode={darkMode} />
+          darkMode={darkMode} center />
       </Reveal>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {coursework.map((course, i) => (
@@ -960,7 +1036,7 @@ const EducationSection = ({ darkMode }) => (
           eyebrow="Education"
           title="Academic Journey"
           subtitle="Built on rigorous engineering fundamentals — from a top GATE rank to an IIT Bombay M.Tech."
-          darkMode={darkMode}
+          darkMode={darkMode} center
         />
       </Reveal>
       <div className="space-y-5">
@@ -1022,7 +1098,7 @@ const AchievementsSection = ({ darkMode }) => (
           eyebrow="Scholastic Achievements"
           title="Recognition & Awards"
           subtitle="A track record of excellence — from district board ranks to India's most competitive engineering entrance exam."
-          darkMode={darkMode}
+          darkMode={darkMode} center
         />
       </Reveal>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1063,7 +1139,7 @@ const LeadershipSection = ({ darkMode }) => (
           eyebrow="Leadership & Experience"
           title="Beyond the Lab"
           subtitle="Driving impact through event management, teaching, and community outreach at IIT Bombay."
-          darkMode={darkMode}
+          darkMode={darkMode} center
         />
       </Reveal>
       <div className="grid md:grid-cols-2 gap-5">
