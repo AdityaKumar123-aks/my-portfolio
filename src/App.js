@@ -249,7 +249,7 @@ const education = [
 ];
 
 const achievements = [
-  { title: "GATE Top 2.55 Percentile", emoji: "🏆", description: "EE 2024 — ranked in the top 2.55% among 59,000+ candidates nationwide, earning direct admission to IIT Bombay.", year: "2024" },
+  { title: "GATE Top 2.55 Percentile", emoji: "🏆", description: "EE 2024 — ranked in the top 2.55 percentile among 59,000+ candidates nationwide, earning direct admission to IIT Bombay.", year: "2024" },
   { title: "IIT Bombay M.Tech — CPI 9.19", emoji: "🎓", description: "Admitted to IIT Bombay's Energy Science & Engineering M.Tech program and achieved a CPI of 9.19 / 10 through ongoing coursework.", year: "2024" },
   { title: "AA Grade — Industrial Drives", emoji: "⭐", description: "Awarded the highest possible grade (AA) in Energy Efficient Industrial Drives at IIT Bombay — recognising outstanding academic performance.", year: "2025" },
   { title: "U.P. Chief Minister Award", emoji: "🏅", description: "Personally awarded by Hon. Chief Minister Yogi Adityanath for securing 4th rank in the entire district in the Class XII board examination.", year: "2018" },
