@@ -385,6 +385,23 @@ const TypeWriter = ({ words }) => {
   );
 };
 
+const useParallax = (speed = 0.15) => {
+  const [offset, setOffset] = useState(0);
+  const ref = useRef(null);
+  useEffect(() => {
+    const fn = () => {
+      if (!ref.current) return;
+      const rect = ref.current.getBoundingClientRect();
+      const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+      setOffset(center * speed);
+    };
+    window.addEventListener("scroll", fn, { passive: true });
+    fn();
+    return () => window.removeEventListener("scroll", fn);
+  }, [speed]);
+  return [ref, offset];
+};
+
 const SectionDivider = ({ darkMode }) => (
   <div className={`w-full h-px ${darkMode ? "bg-gradient-to-r from-transparent via-slate-700 to-transparent" : "bg-gradient-to-r from-transparent via-stone-300 to-transparent"}`} />
 );
@@ -418,10 +435,24 @@ const GlobalStyles = () => {
           0%   { transform: scale(1); opacity: 0.6; }
           100% { transform: scale(1.8); opacity: 0; }
         }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+        @keyframes floatSlow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        @keyframes ringFill {
+          from { stroke-dashoffset: var(--ring-circumference); }
+          to   { stroke-dashoffset: var(--ring-target); }
+        }
         .animate-ping-slow { animation: ping-slow 1.6s ease-out infinite; }
         .animate-slideInUp { animation: slideInUp 0.55s ease-out both; }
         .animate-fadeIn    { animation: fadeIn 0.6s ease-out both; }
         .animate-scaleIn   { animation: scaleIn 0.5s ease-out both; }
+        .animate-float     { animation: float 3s ease-in-out infinite; }
+        .animate-floatSlow { animation: floatSlow 4s ease-in-out infinite; }
       `;
       document.head.appendChild(el);
     }
@@ -645,15 +676,28 @@ const Navbar = ({ darkMode, toggleDark }) => {
 
 const HeroSection = ({ darkMode }) => {
   const [imgErr, setImgErr] = useState(false);
+  const [parallaxRef, parallaxOffset] = useParallax(0.12);
   return (
-    <section id="home"
-      className={`relative min-h-screen pt-16 flex items-center overflow-hidden ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}
-      style={{
-        backgroundImage: darkMode
-          ? "radial-gradient(circle, rgba(251,191,36,0.05) 1px, transparent 1px)"
-          : "radial-gradient(circle, rgba(100,80,30,0.07) 1px, transparent 1px)",
-        backgroundSize: "28px 28px",
-      }}>
+    <section id="home" ref={parallaxRef}
+      className={`relative min-h-screen pt-16 flex items-center overflow-hidden ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+      {/* Parallax dot grid */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: darkMode
+            ? "radial-gradient(circle, rgba(251,191,36,0.05) 1px, transparent 1px)"
+            : "radial-gradient(circle, rgba(100,80,30,0.07) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+          transform: `translateY(${parallaxOffset}px)`,
+          willChange: "transform",
+        }} />
+      {/* Parallax ambient glow */}
+      <div className="absolute pointer-events-none"
+        style={{
+          top: "20%", left: "60%", width: 480, height: 480,
+          background: darkMode ? "radial-gradient(circle, rgba(251,191,36,0.06) 0%, transparent 70%)" : "radial-gradient(circle, rgba(217,119,6,0.07) 0%, transparent 70%)",
+          transform: `translateY(${parallaxOffset * 0.6}px)`,
+          willChange: "transform",
+        }} />
       <WaveformCanvas darkMode={darkMode} />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24 w-full">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
@@ -671,7 +715,7 @@ const HeroSection = ({ darkMode }) => {
 
             <Reveal delay={80}>
               <div className="flex flex-wrap gap-2 mb-6">
-                {["IIT Bombay M.Tech", "GATE Top 2.55%", "8+ Real Projects"].map(b => (
+                {["IIT Bombay M.Tech", "GATE Top 2.55 Percentile", "8+ Real Projects"].map(b => (
                   <span key={b} className={`px-3 py-1 rounded-full text-xs font-medium border ${
                     darkMode ? "bg-slate-800 text-slate-300 border-slate-700" : "bg-white text-stone-700 border-stone-300 shadow-sm"
                   }`}>{b}</span>
@@ -728,7 +772,7 @@ const HeroSection = ({ darkMode }) => {
                   className={`p-2.5 rounded-xl border transition-all hover:-translate-y-0.5 ${darkMode ? "border-slate-700 text-slate-400 hover:border-amber-400 hover:text-amber-400" : "border-stone-200 text-stone-500 hover:border-amber-500 hover:text-amber-600"}`}>
                   <Mail size={19} />
                 </a>
-                <span className={`text-sm hidden sm:inline truncate max-w-[200px] ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{profile.social.email}</span>
+                <span className={`text-sm hidden sm:inline ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{profile.social.email}</span>
               </div>
             </Reveal>
           </div>
@@ -750,7 +794,7 @@ const HeroSection = ({ darkMode }) => {
                   </div>
                 )}
               </div>
-              <div className={`absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border flex items-center justify-center shadow-xl ${
+              <div className={`absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border flex items-center justify-center shadow-xl animate-float ${
                 darkMode ? "bg-slate-900 border-slate-700" : "bg-white border-stone-200"
               }`}>
                 <div className="text-center">
@@ -758,11 +802,11 @@ const HeroSection = ({ darkMode }) => {
                   <div className={`text-xs mt-0.5 ${darkMode ? "text-slate-400" : "text-stone-500"}`}>CPI</div>
                 </div>
               </div>
-              <div className={`absolute -top-3 -left-3 md:-top-4 md:-left-4 px-3 py-2 rounded-xl border shadow-xl ${
+              <div className={`absolute -top-3 -left-3 md:-top-4 md:-left-4 px-3 py-2 rounded-xl border shadow-xl animate-floatSlow ${
                 darkMode ? "bg-slate-900 border-slate-700" : "bg-white border-stone-200"
               }`}>
                 <div className="text-xs font-bold text-amber-600 text-center">GATE</div>
-                <div className={`text-xs font-semibold text-center ${darkMode ? "text-white" : "text-stone-900"}`}>2.55%</div>
+                <div className={`text-xs font-semibold text-center ${darkMode ? "text-white" : "text-stone-900"}`}>2.55 %ile</div>
               </div>
             </div>
           </Reveal>
@@ -777,16 +821,41 @@ const HeroSection = ({ darkMode }) => {
 // STATS
 // ═══════════════════════════════════════════════════════════════
 
+const ProgressRing = ({ pct, size = 90, stroke = 5, darkMode, children }) => {
+  const [setRef, visible] = useOnScreen(0.4);
+  const r = (size - stroke) / 2;
+  const circ = 2 * Math.PI * r;
+  const target = circ - (pct / 100) * circ;
+  return (
+    <div ref={setRef} className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="-rotate-90">
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none"
+          stroke={darkMode ? "rgba(51,65,85,0.5)" : "rgba(214,211,209,0.5)"} strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none"
+          stroke={darkMode ? "#fbbf24" : "#d97706"} strokeWidth={stroke}
+          strokeLinecap="round" strokeDasharray={circ}
+          strokeDashoffset={visible ? target : circ}
+          style={{ transition: "stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1)" }} />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">{children}</div>
+    </div>
+  );
+};
+
+const statRingPct = [75, 82, 88, 100]; // visual fill percentages for each stat
+
 const StatsSection = ({ darkMode }) => (
-  <section className={`py-10 border-y ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200"}`}>
+  <section className={`py-12 sm:py-14 border-y ${darkMode ? "bg-slate-900 border-slate-800" : "bg-white border-stone-200"}`}>
     <div className="max-w-6xl mx-auto px-4 sm:px-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-7 sm:gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8 sm:gap-8">
         {stats.map((s, i) => (
-          <Reveal key={s.label} delay={i * 80} className="text-center">
-            <div className={`text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
-              <AnimatedCounter target={s.value} suffix={s.suffix} dec={s.dec || 0} />
-            </div>
-            <div className={`text-xs sm:text-sm font-semibold mt-1 ${darkMode ? "text-white" : "text-stone-900"}`}>{s.label}</div>
+          <Reveal key={s.label} delay={i * 100} className="flex flex-col items-center text-center">
+            <ProgressRing pct={statRingPct[i]} darkMode={darkMode}>
+              <div className={`text-lg sm:text-xl font-bold tracking-tight leading-none ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
+                <AnimatedCounter target={s.value} suffix={s.suffix} dec={s.dec || 0} />
+              </div>
+            </ProgressRing>
+            <div className={`text-xs sm:text-sm font-semibold mt-3 ${darkMode ? "text-white" : "text-stone-900"}`}>{s.label}</div>
             <div className={`text-xs mt-0.5 leading-tight ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{s.sub}</div>
           </Reveal>
         ))}
@@ -799,15 +868,24 @@ const StatsSection = ({ darkMode }) => (
 // ABOUT
 // ═══════════════════════════════════════════════════════════════
 
-const AboutSection = ({ darkMode }) => (
-  <section id="about" className={`py-14 md:py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
-    <div className="max-w-6xl mx-auto px-4 sm:px-6">
+const AboutSection = ({ darkMode }) => {
+  const [parallaxRef, parallaxOffset] = useParallax(0.08);
+  return (
+  <section id="about" ref={parallaxRef} className={`relative py-14 md:py-20 overflow-hidden ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+    {/* Floating ambient orb */}
+    <div className="absolute pointer-events-none -top-20 -right-20 w-80 h-80 rounded-full opacity-30"
+      style={{
+        background: darkMode ? "radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%)" : "radial-gradient(circle, rgba(217,119,6,0.06) 0%, transparent 70%)",
+        transform: `translateY(${parallaxOffset}px)`,
+        willChange: "transform",
+      }} />
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
       <div className="grid lg:grid-cols-2 gap-16 items-start">
         <Reveal>
           <SectionHeader eyebrow="About Me" title="From Equations to Hardware" darkMode={darkMode} center />
           <p className={`text-base leading-relaxed mb-5 ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
             I'm an M.Tech scholar at IIT Bombay with a passion for making power systems smarter and more efficient.
-            My journey began with a GATE Top 2.55% rank among 59,000+ engineers — and that same rigor defines everything I build.
+            My journey began with a GATE Top 2.55 Percentile rank among 59,000+ engineers — and that same rigor defines everything I build.
           </p>
           <p className={`text-base leading-relaxed mb-5 ${darkMode ? "text-slate-400" : "text-stone-600"}`}>
             My thesis on LLC Resonant Converters for EV Charging demonstrates my end-to-end engineering capability:
@@ -842,7 +920,7 @@ const AboutSection = ({ darkMode }) => (
               {[
                 { title: "Simulation to Silicon", desc: "I design in PLECS/LTSpice, lay out PCBs in Altium, and test hardware on the bench — full-stack power engineer." },
                 { title: "DSP Firmware Skills", desc: "Hands-on TMS320F28379D coding — ePWM, ADC, PIE configuration for real closed-loop converter control." },
-                { title: "Proven Academic Excellence", desc: "IIT Bombay CPI 9.19, GATE Top 2.55%, 8+ hardware projects with measurable, real outcomes." },
+                { title: "Proven Academic Excellence", desc: "IIT Bombay CPI 9.19, GATE Top 2.55 Percentile, 8+ hardware projects with measurable, real outcomes." },
                 { title: "Leadership & Mentoring", desc: "Managed 500+ student events, evaluated 78+ students as Teaching Assistant at IIT Bombay." },
               ].map((item, i) => (
                 <div key={i} className="flex gap-3">
@@ -859,7 +937,8 @@ const AboutSection = ({ darkMode }) => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 // ═══════════════════════════════════════════════════════════════
 // PROJECTS
@@ -873,9 +952,76 @@ const categoryIcon = {
   "Robotics": <Terminal size={52} />,
 };
 
+const ProjectCard = ({ project, darkMode, i }) => (
+  <div className={`group rounded-2xl border overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full ${
+    darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/30 hover:shadow-amber-500/5" : "bg-white border-stone-200 hover:border-amber-300 hover:shadow-stone-200/80"
+  }`}>
+    <div className={`h-44 relative overflow-hidden bg-gradient-to-br ${project.gradient}`}>
+      {project.image ? (
+        <img src={project.image} alt={project.title}
+          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+      ) : (
+        <div className="w-full h-full flex flex-col items-center justify-center gap-3"
+          style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)", backgroundSize: "18px 18px" }}>
+          <div className="text-white opacity-50">{categoryIcon[project.category]}</div>
+          <div className="text-center px-4">
+            <p className="text-white/60 text-xs font-bold uppercase tracking-widest">{project.category}</p>
+            <p className="text-white font-semibold text-sm mt-1 drop-shadow">{project.highlight}</p>
+          </div>
+        </div>
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+        <span className="bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full border border-white/20">
+          {project.category}
+        </span>
+        {project.featured && (
+          <span className="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">Featured</span>
+        )}
+      </div>
+    </div>
+    <div className="p-4 sm:p-5">
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <div>
+          <p className={`text-xs font-medium mb-1 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{project.period}</p>
+          <h3 className={`font-bold text-base leading-snug ${darkMode ? "text-white" : "text-stone-900"}`}>{project.title}</h3>
+        </div>
+        <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"
+          className={`flex-shrink-0 p-2 rounded-lg border transition-colors ${
+            darkMode ? "border-slate-600 text-slate-400 hover:border-amber-400 hover:text-amber-400" : "border-stone-200 text-stone-400 hover:border-amber-500 hover:text-amber-600"
+          }`}>
+          <Github size={16} />
+        </a>
+      </div>
+      <p className={`text-xs font-semibold mb-3 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>▸ {project.highlight}</p>
+      <p className={`text-sm leading-relaxed mb-4 line-clamp-3 ${darkMode ? "text-slate-400" : "text-stone-600"}`}>{project.description}</p>
+      <div className="flex flex-wrap gap-1.5 mb-4">
+        {project.tools.map(tool => (
+          <span key={tool} className={`text-xs px-2 py-0.5 rounded-md font-medium ${darkMode ? "bg-slate-700 text-slate-300" : "bg-stone-100 text-stone-700"}`}>
+            {tool}
+          </span>
+        ))}
+      </div>
+      <div className={`pt-3 border-t ${darkMode ? "border-slate-700" : "border-stone-100"}`}>
+        <a href={project.github} target="_blank" rel="noopener noreferrer"
+          className={`flex items-center gap-2 text-sm font-semibold px-3 py-2 rounded-lg border transition-all hover:-translate-y-0.5 ${
+            darkMode
+              ? "border-amber-400/40 text-amber-400 hover:bg-amber-400/10 hover:border-amber-400"
+              : "border-amber-500/60 text-amber-600 hover:bg-amber-50 hover:border-amber-500"
+          }`}>
+          <Github size={14} />View on GitHub<ExternalLink size={12} className="ml-auto" />
+        </a>
+      </div>
+    </div>
+  </div>
+);
+
 const ProjectsSection = ({ darkMode }) => {
   const [active, setActive] = useState("All");
   const filtered = active === "All" ? projects : projects.filter(p => p.category === active);
+  const hero = filtered.find(p => p.featured) || filtered[0];
+  const rest = filtered.filter(p => p.id !== hero?.id);
+
   return (
     <section id="projects" className={`py-14 md:py-20 ${darkMode ? "bg-slate-900" : "bg-white"}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -889,7 +1035,7 @@ const ProjectsSection = ({ darkMode }) => {
         </Reveal>
 
         <Reveal delay={80}>
-          <div className="flex flex-wrap gap-2 mb-8 md:mb-10">
+          <div className="flex flex-wrap gap-2 mb-8 md:mb-10 justify-center">
             {projectCategories.map(cat => (
               <button key={cat} onClick={() => setActive(cat)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -905,75 +1051,61 @@ const ProjectsSection = ({ darkMode }) => {
           </div>
         </Reveal>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {filtered.map((project, i) => (
-            <Reveal key={project.id} delay={i * 70} direction={i % 2 === 0 ? "left" : "right"}>
-              <div className={`group rounded-2xl border overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
-                darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/30 hover:shadow-amber-500/5" : "bg-white border-stone-200 hover:border-amber-300 hover:shadow-stone-200/80"
-              }`}>
-                <div className={`h-44 relative overflow-hidden bg-gradient-to-br ${project.gradient}`}>
-                  {project.image ? (
-                    <img src={project.image} alt={project.title}
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+        {/* ─ Spotlight hero project ─ */}
+        {hero && (
+          <Reveal delay={100}>
+            <div className={`group rounded-2xl border overflow-hidden mb-8 transition-all duration-300 hover:shadow-2xl ${
+              darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/30 hover:shadow-amber-500/5" : "bg-white border-stone-200 hover:border-amber-300 hover:shadow-stone-300/50"
+            }`}>
+              <div className="grid md:grid-cols-2">
+                {/* Image */}
+                <div className={`relative h-56 md:h-auto overflow-hidden bg-gradient-to-br ${hero.gradient}`}>
+                  {hero.image ? (
+                    <img src={hero.image} alt={hero.title}
+                      className="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-700" />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-3"
-                      style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)", backgroundSize: "18px 18px" }}>
-                      <div className="text-white opacity-50">{categoryIcon[project.category]}</div>
-                      <div className="text-center px-4">
-                        <p className="text-white/60 text-xs font-bold uppercase tracking-widest">{project.category}</p>
-                        <p className="text-white font-semibold text-sm mt-1 drop-shadow">{project.highlight}</p>
-                      </div>
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-white opacity-40">{categoryIcon[hero.category]}</div>
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                    <span className="bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-full border border-white/20">
-                      {project.category}
-                    </span>
-                    {project.featured && (
-                      <span className="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">Featured</span>
-                    )}
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    <span className="bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">Spotlight</span>
+                    <span className="bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/20">{hero.category}</span>
                   </div>
                 </div>
-
-                <div className="p-4 sm:p-5">
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <div>
-                      <p className={`text-xs font-medium mb-1 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{project.period}</p>
-                      <h3 className={`font-bold text-base leading-snug ${darkMode ? "text-white" : "text-stone-900"}`}>{project.title}</h3>
-                    </div>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"
-                      className={`flex-shrink-0 p-2 rounded-lg border transition-colors ${
-                        darkMode ? "border-slate-600 text-slate-400 hover:border-amber-400 hover:text-amber-400" : "border-stone-200 text-stone-400 hover:border-amber-500 hover:text-amber-600"
-                      }`}>
-                      <Github size={16} />
-                    </a>
-                  </div>
-
-                  <p className={`text-xs font-semibold mb-3 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>▸ {project.highlight}</p>
-
-                  <p className={`text-sm leading-relaxed mb-4 line-clamp-3 ${darkMode ? "text-slate-400" : "text-stone-600"}`}>{project.description}</p>
-
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {project.tools.map(tool => (
-                      <span key={tool} className={`text-xs px-2 py-0.5 rounded-md font-medium ${darkMode ? "bg-slate-700 text-slate-300" : "bg-stone-100 text-stone-700"}`}>
+                {/* Content */}
+                <div className="p-6 sm:p-8 flex flex-col justify-center">
+                  <p className={`text-xs font-medium mb-2 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>{hero.period}</p>
+                  <h3 className={`font-bold text-xl sm:text-2xl leading-snug mb-3 ${darkMode ? "text-white" : "text-stone-900"}`}>{hero.title}</h3>
+                  <p className={`text-sm font-semibold mb-4 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>▸ {hero.highlight}</p>
+                  <p className={`text-sm leading-relaxed mb-5 ${darkMode ? "text-slate-400" : "text-stone-600"}`}>{hero.description}</p>
+                  <div className="flex flex-wrap gap-1.5 mb-5">
+                    {hero.tools.map(tool => (
+                      <span key={tool} className={`text-xs px-2.5 py-1 rounded-md font-medium ${darkMode ? "bg-slate-700 text-slate-300" : "bg-stone-100 text-stone-700"}`}>
                         {tool}
                       </span>
                     ))}
                   </div>
-
-                  <div className={`pt-3 border-t ${darkMode ? "border-slate-700" : "border-stone-100"}`}>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer"
-                      className={`flex items-center gap-2 text-sm font-semibold px-3 py-2 rounded-lg border transition-all hover:-translate-y-0.5 ${
-                        darkMode
-                          ? "border-amber-400/40 text-amber-400 hover:bg-amber-400/10 hover:border-amber-400"
-                          : "border-amber-500/60 text-amber-600 hover:bg-amber-50 hover:border-amber-500"
-                      }`}>
-                      <Github size={14} />View on GitHub<ExternalLink size={12} className="ml-auto" />
-                    </a>
-                  </div>
+                  <a href={hero.github} target="_blank" rel="noopener noreferrer"
+                    className={`inline-flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-lg border transition-all hover:-translate-y-0.5 w-fit ${
+                      darkMode
+                        ? "border-amber-400/40 text-amber-400 hover:bg-amber-400/10 hover:border-amber-400"
+                        : "border-amber-500/60 text-amber-600 hover:bg-amber-50 hover:border-amber-500"
+                    }`}>
+                    <Github size={15} />View on GitHub<ExternalLink size={13} />
+                  </a>
                 </div>
               </div>
+            </div>
+          </Reveal>
+        )}
+
+        {/* ─ Remaining projects grid ─ */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {rest.map((project, i) => (
+            <Reveal key={project.id} delay={i * 70} direction={i % 3 === 0 ? "left" : i % 3 === 1 ? "up" : "right"}>
+              <ProjectCard project={project} darkMode={darkMode} i={i} />
             </Reveal>
           ))}
         </div>
@@ -1002,10 +1134,17 @@ const skillIconLg = {
 
 const SkillsSection = ({ darkMode }) => {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [parallaxRef, parallaxOffset] = useParallax(0.07);
   const group = skillGroups[activeIdx];
   return (
-    <section id="skills" className={`py-14 md:py-20 ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section id="skills" ref={parallaxRef} className={`relative py-14 md:py-20 overflow-hidden ${darkMode ? "bg-slate-950" : "bg-stone-50"}`}>
+      <div className="absolute pointer-events-none -bottom-16 -left-16 w-72 h-72 rounded-full"
+        style={{
+          background: darkMode ? "radial-gradient(circle, rgba(251,191,36,0.06) 0%, transparent 70%)" : "radial-gradient(circle, rgba(217,119,6,0.05) 0%, transparent 70%)",
+          transform: `translateY(${parallaxOffset}px)`,
+          willChange: "transform",
+        }} />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         <Reveal>
           <SectionHeader eyebrow="Technical Skills" title="Tools of the Trade"
             subtitle="Comprehensive proficiency across simulation, hardware design, programming, and power electronics domains."
@@ -1197,52 +1336,71 @@ const EducationSection = ({ darkMode }) => (
         <SectionHeader
           eyebrow="Education"
           title="Academic Journey"
-          subtitle="Built on rigorous engineering fundamentals — from a top GATE rank to an IIT Bombay M.Tech."
+          subtitle="From a district rank in Class XII to a CPI of 9.19 at IIT Bombay — consistent excellence at every level."
           darkMode={darkMode} center
         />
       </Reveal>
-      <div className="space-y-5">
-        {education.map((edu, i) => (
-          <Reveal key={edu.institution + edu.period} delay={i * 100}>
-            <div className={`flex gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl border transition-all hover:shadow-md ${
-              darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/20" : "bg-white border-stone-200 hover:border-amber-200"
-            }`}>
-              {/* Logo */}
-              <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl border flex-shrink-0 flex items-center justify-center overflow-hidden ${
-                darkMode ? "bg-slate-700 border-slate-600" : "bg-white border-stone-200 shadow-sm"
-              }`}>
-                {edu.logo ? (
-                  <img src={edu.logo} alt={edu.institution} className="w-9 h-9 sm:w-12 sm:h-12 object-contain"
-                    onError={e => { e.target.style.display = "none"; }} />
-                ) : (
-                  <span className={`text-sm font-bold ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
-                    {edu.institution.substring(0, 2).toUpperCase()}
-                  </span>
-                )}
-              </div>
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
-                  <div>
-                    <h3 className={`font-bold text-base sm:text-lg leading-tight ${darkMode ? "text-white" : "text-stone-900"}`}>{edu.institution}</h3>
-                    <p className={`font-medium mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{edu.degree}</p>
+
+      {/* Timeline */}
+      <div className="relative max-w-3xl mx-auto">
+        {/* Vertical line */}
+        <div className={`absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 ${
+          darkMode ? "bg-gradient-to-b from-amber-400 via-amber-400/40 to-transparent" : "bg-gradient-to-b from-amber-500 via-amber-300/50 to-transparent"
+        }`} />
+
+        <div className="space-y-10 sm:space-y-12">
+          {education.map((edu, i) => (
+            <Reveal key={edu.institution + edu.period} delay={i * 120} direction="left">
+              <div className="relative pl-16 sm:pl-20">
+                {/* Timeline node */}
+                <div className={`absolute left-4 sm:left-6 top-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-[3px] z-10 ${
+                  i === 0
+                    ? "bg-amber-500 border-amber-300 shadow-lg shadow-amber-500/30"
+                    : darkMode ? "bg-slate-800 border-amber-400/60" : "bg-white border-amber-500/60"
+                }`} />
+                {/* Content */}
+                <div className={`rounded-2xl border p-5 sm:p-6 transition-all hover:shadow-lg ${
+                  darkMode ? "bg-slate-800 border-slate-700 hover:border-amber-400/30" : "bg-white border-stone-200 hover:border-amber-200 shadow-sm"
+                }`}>
+                  <div className="flex items-start gap-4 sm:gap-5">
+                    {/* Logo */}
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl border flex-shrink-0 flex items-center justify-center overflow-hidden ${
+                      darkMode ? "bg-slate-700 border-slate-600" : "bg-white border-stone-200 shadow-sm"
+                    }`}>
+                      {edu.logo ? (
+                        <img src={edu.logo} alt={edu.institution} className="w-9 h-9 sm:w-10 sm:h-10 object-contain"
+                          onError={e => { e.target.style.display = "none"; }} />
+                      ) : (
+                        <span className={`text-sm font-bold ${darkMode ? "text-amber-400" : "text-amber-600"}`}>
+                          {edu.institution.substring(0, 2).toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    {/* Details */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-start justify-between gap-2 mb-1.5">
+                        <div>
+                          <h3 className={`font-bold text-base sm:text-lg leading-tight ${darkMode ? "text-white" : "text-stone-900"}`}>{edu.institution}</h3>
+                          <p className={`text-sm font-medium mt-0.5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}>{edu.degree}</p>
+                        </div>
+                        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${
+                          darkMode ? "bg-slate-700 text-slate-300" : "bg-stone-100 text-stone-600"
+                        }`}>{edu.period}</span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
+                        <span className={`text-xs font-bold px-2.5 py-1 rounded-md ${
+                          darkMode ? "bg-amber-400/15 text-amber-400 border border-amber-400/20" : "bg-amber-50 text-amber-700 border border-amber-200"
+                        }`}>{edu.gpa}</span>
+                        <span className={`text-xs ${darkMode ? "text-slate-500" : "text-stone-400"}`}>·</span>
+                        <span className={`text-xs ${darkMode ? "text-slate-400" : "text-stone-500"}`}>{edu.focus}</span>
+                      </div>
+                    </div>
                   </div>
-                  <span className={`text-xs font-semibold px-2 py-1 rounded-md flex-shrink-0 ${
-                    darkMode ? "bg-slate-700 text-slate-300" : "bg-stone-100 text-stone-600"
-                  }`}>{edu.period}</span>
                 </div>
-                {/* GPA badge */}
-                <span className={`inline-block text-xs font-bold px-2.5 py-1 rounded-md mb-2 ${
-                  darkMode ? "bg-amber-400/15 text-amber-400 border border-amber-400/20" : "bg-amber-50 text-amber-700 border border-amber-200"
-                }`}>{edu.gpa}</span>
-                {/* Focus */}
-                <p className={`text-xs mt-1 ${darkMode ? "text-slate-500" : "text-stone-400"}`}>
-                  <span className="font-bold uppercase tracking-wider mr-1">Focus:</span>{edu.focus}
-                </p>
               </div>
-            </div>
-          </Reveal>
-        ))}
+            </Reveal>
+          ))}
+        </div>
       </div>
     </div>
   </section>
